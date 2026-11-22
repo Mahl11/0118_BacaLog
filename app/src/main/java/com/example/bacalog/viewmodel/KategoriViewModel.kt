@@ -42,10 +42,17 @@ class KategoriViewModel(private val repository: KategoriRepository) : ViewModel(
     private val _dialogError = MutableStateFlow<String?>(null)
     val dialogError: StateFlow<String?> = _dialogError.asStateFlow()
 
+    private val _snackbarMessage = MutableStateFlow<String?>(null)
+    val snackbarMessage: StateFlow<String?> = _snackbarMessage.asStateFlow()
+
     private var searchJob: Job? = null
 
     init {
         loadKategori()
+    }
+
+    fun resetSnackbarMessage() {
+        _snackbarMessage.value = null
     }
 
     fun loadKategori(search: String? = _searchQuery.value) {
@@ -107,7 +114,9 @@ class KategoriViewModel(private val repository: KategoriRepository) : ViewModel(
             }
 
             result.onSuccess {
+                val action = if (target == null) "ditambahkan" else "diperbarui"
                 closeAddEditDialog()
+                _snackbarMessage.value = "Kategori topik berhasil $action"
                 loadKategori()
             }.onFailure { throwable ->
                 _dialogError.value = throwable.message ?: "Gagal menyimpan kategori"
@@ -131,6 +140,7 @@ class KategoriViewModel(private val repository: KategoriRepository) : ViewModel(
             val result = repository.deleteKategori(target.id)
             result.onSuccess {
                 closeDeleteDialog()
+                _snackbarMessage.value = "Kategori topik berhasil dihapus"
                 loadKategori()
             }.onFailure { throwable ->
                 closeDeleteDialog()

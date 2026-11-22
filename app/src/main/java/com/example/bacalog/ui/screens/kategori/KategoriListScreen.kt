@@ -76,9 +76,19 @@ fun KategoriListScreen(
     val isDeleteDialogOpen by viewModel.isDeleteDialogOpen.collectAsState()
     val kategoriToDelete by viewModel.kategoriToDelete.collectAsState()
     val dialogError by viewModel.dialogError.collectAsState()
+    val snackbarMessage by viewModel.snackbarMessage.collectAsState()
+    val snackbarHostState = remember { androidx.compose.material3.SnackbarHostState() }
+
+    androidx.compose.runtime.LaunchedEffect(snackbarMessage) {
+        snackbarMessage?.let { msg ->
+            snackbarHostState.showSnackbar(msg)
+            viewModel.resetSnackbarMessage()
+        }
+    }
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
+        snackbarHost = { androidx.compose.material3.SnackbarHost(hostState = snackbarHostState) },
         topBar = {
             TopAppBar(
                 title = {
