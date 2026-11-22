@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">BacaLog</string>
+    <string name="app_tagline">Pencatat Progres Bacaan dan Belajar Mandiri</string>
+
+    <!-- Tombol & Aksi Umum -->
+    <string name="btn_simpan">Simpan</string>
+    <string name="btn_batal">Batal</string>
+    <string name="btn_hapus">Hapus</string>
+    <string name="btn_ubah">Ubah</string>
+    <string name="btn_kembali">Kembali</string>
+    <string name="btn_masuk">Masuk</string>
+    <string name="btn_daftar">Daftar</string>
+    <string name="btn_keluar">Keluar</string>
+    <string name="btn_coba_lagi">Coba Lagi</string>
+
+    <!-- Dialog Konfirmasi -->
+    <string name="dialog_konfirmasi_judul">Konfirmasi Hapus</string>
+    <string name="dialog_konfirmasi_pesan">Apakah Anda yakin ingin menghapus data ini? Tindakan ini tidak dapat dibatalkan.</string>
+    <string name="dialog_ya">Ya, Hapus</string>
+    <string name="dialog_tidak">Batal</string>
+
+    <!-- Status & Feedback -->
+    <string name="status_memuat">Memuat data...</string>
+    <string name="status_kosong">Belum ada data tersedia.</string>
+    <string name="status_error_koneksi">Gagal terhubung ke server. Periksa koneksi internet Anda.</string>
+    <string name="validasi_wajib">* Wajib diisi</string>
+</resources>
