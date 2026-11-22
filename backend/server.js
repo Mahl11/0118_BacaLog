@@ -170,6 +170,31 @@ app.get('/api/profil', authenticateToken, async (req, res) => {
     }
 });
 
+// 6. Ringkasan Statistik Dashboard
+app.get('/api/dashboard/statistik', authenticateToken, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const [bacaanRows] = await dbPool.query(
+            'SELECT COUNT(*) AS total, SUM(CASE WHEN status_baca = "Sedang Dibaca" THEN 1 ELSE 0 END) AS sedang, SUM(CASE WHEN status_baca = "Selesai" THEN 1 ELSE 0 END) AS selesai FROM bahan_bacaan WHERE user_id = ?',
+            [userId]
+        );
+        const [progresRows] = await dbPool.query(
+            'SELECT COALESCE(SUM(halaman_dicapai), 0) AS total_halaman FROM catatan_progres WHERE user_id = ?',
+            [userId]
+        );
+
+        res.json({
+            status: 'success',
+            total_bacaan: bacaanRows[0].total || 0,
+            sedang_dibaca: bacaanRows[0].sedang || 0,
+            selesai_dibaca: bacaanRows[0].selesai || 0,
+            total_halaman: progresRows[0].total_halaman || 0
+        });
+    } catch (error) {
+        res.status(500).json({ status: 'error', message: error.message });
+    }
+});
+
 // Jalankan Server
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`[BacaLog API] Server aktif di port ${PORT}`);

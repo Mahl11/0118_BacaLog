@@ -19,6 +19,9 @@ class ViewModelFactory(private val context: Context) : ViewModelProvider.Factory
                 val authRepository = AuthRepository(apiService, tokenManager)
                 AuthViewModel(authRepository) as T
             }
+            modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
+                HomeViewModel(apiService) as T
+            }
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
     }

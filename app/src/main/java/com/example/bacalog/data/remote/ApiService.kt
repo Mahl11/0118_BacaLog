@@ -27,4 +27,7 @@ interface ApiService {
 
     @GET("profil")
     suspend fun getProfile(): Response<UserDto>
+
+    @GET("dashboard/statistik")
+    suspend fun getDashboardStatistik(): Response<com.example.bacalog.data.model.DashboardStatistikResponse>
 }
