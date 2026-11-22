@@ -18,6 +18,7 @@ import com.example.bacalog.ui.navigation.AppNavGraph
 import com.example.bacalog.ui.navigation.Screen
 import com.example.bacalog.ui.theme.BacaLogTheme
 import com.example.bacalog.viewmodel.AuthViewModel
+import com.example.bacalog.viewmodel.HomeViewModel
 import com.example.bacalog.viewmodel.ViewModelFactory
 
 class MainActivity : ComponentActivity() {
@@ -28,6 +29,7 @@ class MainActivity : ComponentActivity() {
             BacaLogTheme {
                 val factory = ViewModelFactory(applicationContext)
                 val authViewModel: AuthViewModel = viewModel(factory = factory)
+                val homeViewModel: HomeViewModel = viewModel(factory = factory)
                 val isUserLoggedIn by authViewModel.isUserLoggedIn.collectAsState()
 
                 when (isUserLoggedIn) {
@@ -45,12 +47,14 @@ class MainActivity : ComponentActivity() {
                     true -> {
                         AppNavGraph(
                             authViewModel = authViewModel,
+                            homeViewModel = homeViewModel,
                             startDestination = Screen.Home.route
                         )
                     }
                     false -> {
                         AppNavGraph(
                             authViewModel = authViewModel,
+                            homeViewModel = homeViewModel,
                             startDestination = Screen.Login.route
                         )
                     }

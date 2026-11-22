@@ -8,12 +8,20 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.bacalog.ui.screens.auth.LoginScreen
 import com.example.bacalog.ui.screens.auth.RegisterScreen
+import com.example.bacalog.ui.screens.bacaan.BacaanListScreen
 import com.example.bacalog.ui.screens.home.HomeScreen
+import com.example.bacalog.ui.screens.kategori.KategoriListScreen
+import com.example.bacalog.ui.screens.laporan.LaporanLokalScreen
+import com.example.bacalog.ui.screens.profil.ProfilScreen
+import com.example.bacalog.ui.screens.progres.ProgresListScreen
+import com.example.bacalog.ui.screens.target.TargetListScreen
 import com.example.bacalog.viewmodel.AuthViewModel
+import com.example.bacalog.viewmodel.HomeViewModel
 
 @Composable
 fun AppNavGraph(
     authViewModel: AuthViewModel,
+    homeViewModel: HomeViewModel,
     startDestination: String,
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController()
@@ -31,6 +39,7 @@ fun AppNavGraph(
                     navController.navigate(Screen.Register.route)
                 },
                 onLoginSuccess = {
+                    homeViewModel.loadStatistik()
                     navController.navigate(Screen.Home.route) {
                         popUpTo(Screen.Login.route) { inclusive = true }
                     }
@@ -46,6 +55,7 @@ fun AppNavGraph(
                     navController.popBackStack()
                 },
                 onRegisterSuccess = {
+                    homeViewModel.loadStatistik()
                     navController.navigate(Screen.Home.route) {
                         popUpTo(Screen.Login.route) { inclusive = true }
                     }
@@ -56,11 +66,51 @@ fun AppNavGraph(
         composable(Screen.Home.route) {
             HomeScreen(
                 authViewModel = authViewModel,
+                homeViewModel = homeViewModel,
+                onNavigate = { route ->
+                    navController.navigate(route)
+                },
                 onLogout = {
                     navController.navigate(Screen.Login.route) {
                         popUpTo(Screen.Home.route) { inclusive = true }
                     }
                 }
+            )
+        }
+
+        composable(Screen.Kategori.route) {
+            KategoriListScreen(
+                onNavigateBack = { navController.popBackStack() }
+            )
+        }
+
+        composable(Screen.Bacaan.route) {
+            BacaanListScreen(
+                onNavigateBack = { navController.popBackStack() }
+            )
+        }
+
+        composable(Screen.Progres.route) {
+            ProgresListScreen(
+                onNavigateBack = { navController.popBackStack() }
+            )
+        }
+
+        composable(Screen.Target.route) {
+            TargetListScreen(
+                onNavigateBack = { navController.popBackStack() }
+            )
+        }
+
+        composable(Screen.Profil.route) {
+            ProfilScreen(
+                onNavigateBack = { navController.popBackStack() }
+            )
+        }
+
+        composable(Screen.Laporan.route) {
+            LaporanLokalScreen(
+                onNavigateBack = { navController.popBackStack() }
             )
         }
     }
