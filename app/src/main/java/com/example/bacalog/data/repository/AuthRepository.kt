@@ -31,7 +31,8 @@ class AuthRepository(
                 }
                 Result.success(body)
             } else {
-                val errorMsg = response.errorBody()?.string() ?: "Login gagal (${response.code()})"
+                val rawError = response.errorBody()?.string()
+                val errorMsg = parseErrorMessage(rawError, "Login gagal (${response.code()})")
                 Result.failure(Exception(errorMsg))
             }
         } catch (e: Exception) {
@@ -49,11 +50,26 @@ class AuthRepository(
                 }
                 Result.success(body)
             } else {
-                val errorMsg = response.errorBody()?.string() ?: "Registrasi gagal (${response.code()})"
+                val rawError = response.errorBody()?.string()
+                val errorMsg = parseErrorMessage(rawError, "Registrasi gagal (${response.code()})")
                 Result.failure(Exception(errorMsg))
             }
         } catch (e: Exception) {
             Result.failure(e)
+        }
+    }
+
+    private fun parseErrorMessage(rawError: String?, fallback: String): String {
+        if (rawError.isNullOrBlank()) return fallback
+        return try {
+            val json = org.json.JSONObject(rawError)
+            when {
+                json.has("message") -> json.getString("message")
+                json.has("pesan") -> json.getString("pesan")
+                else -> rawError
+            }
+        } catch (e: Exception) {
+            rawError
         }
     }
 

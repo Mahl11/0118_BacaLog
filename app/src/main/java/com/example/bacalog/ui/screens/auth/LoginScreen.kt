@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -18,6 +19,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.MenuBook
 import androidx.compose.material.icons.filled.Visibility
@@ -218,12 +220,23 @@ fun LoginScreen(
                                 ),
                                 shape = RoundedCornerShape(dimensionResource(R.dimen.button_corner_radius))
                             ) {
-                                Text(
-                                    text = (uiState as AuthUiState.Error).message,
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onErrorContainer,
-                                    modifier = Modifier.padding(dimensionResource(R.dimen.padding_small))
-                                )
+                                Row(
+                                    modifier = Modifier.padding(dimensionResource(R.dimen.padding_small)),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Info,
+                                        contentDescription = null,
+                                        tint = MaterialTheme.colorScheme.error,
+                                        modifier = Modifier.size(dimensionResource(R.dimen.icon_size_small))
+                                    )
+                                    Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_extra_small)))
+                                    Text(
+                                        text = (uiState as AuthUiState.Error).message,
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.onErrorContainer
+                                    )
+                                }
                             }
                         }
 
