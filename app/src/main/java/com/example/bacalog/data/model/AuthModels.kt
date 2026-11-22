@@ -13,6 +13,15 @@ data class RegisterRequest(
     @SerializedName("password") val kataSandi: String
 )
 
+data class RefreshTokenRequest(
+    @SerializedName("refresh_token") val refreshToken: String
+)
+
+data class RefreshTokenResponse(
+    @SerializedName("status") val status: String,
+    @SerializedName("access_token") val accessToken: String
+)
+
 data class AuthResponse(
     @SerializedName("status") val status: String,
     @SerializedName("message") val pesan: String,
@@ -26,4 +35,9 @@ data class UserDto(
     @SerializedName("nama") val nama: String,
     @SerializedName("email") val email: String,
     @SerializedName("bio_belajar") val bioBelajar: String? = null
+)
+
+data class GenericResponse(
+    @SerializedName("status") val status: String,
+    @SerializedName("message") val pesan: String
 )
