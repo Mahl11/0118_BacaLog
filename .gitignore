@@ -13,3 +13,8 @@ local.properties
 AGENTS.md
 *.apk
 *.aab
+node_modules/
+backend/node_modules/
+package-lock.json
+backend/package-lock.json
+gradle-daemon-jvm.properties
