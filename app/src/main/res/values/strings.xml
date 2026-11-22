@@ -51,7 +51,39 @@
     <string name="err_password_pendek">Kata sandi minimal 6 karakter</string>
     <string name="err_password_tidak_sama">Kata sandi dan konfirmasi tidak sesuai</string>
 
-    <!-- Layar Beranda (Home) -->
+    <!-- Layar Beranda (Dashboard HomeScreen) -->
     <string name="home_judul">Beranda BacaLog</string>
     <string name="home_subjudul">Ringkasan Aktivitas dan Target Belajar</string>
+    <string name="dashboard_salam_pembuka">Halo, Pembelajar Mandiri!</string>
+    <string name="dashboard_salam_sub">Pantau jejak literasi dan materi kuliahmu hari ini</string>
+    <string name="dashboard_target_banner_judul">Target Belajar Aktif</string>
+    <string name="dashboard_target_banner_desc">Konsistensi adalah kunci. Catat progres belajarmu hari ini!</string>
+    <string name="section_statistik_belajar">Ringkasan Belajar</string>
+    <string name="section_menu_utama">Modul Fitur Utama</string>
+
+    <!-- Statistik Card Labels -->
+    <string name="stat_total_bacaan">Total Bahan</string>
+    <string name="stat_sedang_dibaca">Sedang Dibaca</string>
+    <string name="stat_selesai">Selesai</string>
+    <string name="stat_halaman">Slide/Hal</string>
+
+    <!-- Menu Akses Cepat Shortcuts -->
+    <string name="menu_kategori_judul">Kategori Topik</string>
+    <string name="menu_kategori_desc">Kelola pengelompokan mata kuliah</string>
+    <string name="menu_bacaan_judul">Bahan Bacaan</string>
+    <string name="menu_bacaan_desc">Slide, modul lab dan buku kuliah</string>
+    <string name="menu_progres_judul">Catatan Progres</string>
+    <string name="menu_progres_desc">Log sesi baca dan intisari materi</string>
+    <string name="menu_target_judul">Target Belajar</string>
+    <string name="menu_target_desc">Pantau target capaian periodik</string>
+    <string name="menu_laporan_judul">Laporan Lokal (.txt)</string>
+    <string name="menu_laporan_desc">Simpan dan baca file rekap di HP</string>
+    <string name="menu_profil_judul">Profil Pengguna</string>
+    <string name="menu_profil_desc">Informasi akun dan fokus belajar</string>
+
+    <!-- Bottom Navigation Bar -->
+    <string name="nav_beranda">Beranda</string>
+    <string name="nav_bacaan">Bacaan</string>
+    <string name="nav_progres">Progres</string>
+    <string name="nav_profil">Profil</string>
 </resources>
