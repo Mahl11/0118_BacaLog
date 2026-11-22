@@ -18,6 +18,7 @@ import com.example.bacalog.ui.screens.profil.ProfilScreen
 import com.example.bacalog.ui.screens.progres.ProgresListScreen
 import com.example.bacalog.ui.screens.target.TargetListScreen
 import com.example.bacalog.viewmodel.AuthViewModel
+import com.example.bacalog.viewmodel.BacaanViewModel
 import com.example.bacalog.viewmodel.HomeViewModel
 import com.example.bacalog.viewmodel.KategoriViewModel
 
@@ -91,8 +92,15 @@ fun AppNavGraph(
         }
 
         composable(Screen.Bacaan.route) {
+            val bacaanViewModel: BacaanViewModel = viewModel(factory = factory)
             BacaanListScreen(
-                onNavigateBack = { navController.popBackStack() }
+                viewModel = bacaanViewModel,
+                onNavigateBack = { navController.popBackStack() },
+                onNavigate = { route ->
+                    navController.navigate(route) {
+                        launchSingleTop = true
+                    }
+                }
             )
         }
 

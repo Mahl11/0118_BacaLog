@@ -1,6 +1,8 @@
 package com.example.bacalog.data.remote
 
 import com.example.bacalog.data.model.AuthResponse
+import com.example.bacalog.data.model.BacaanListResponse
+import com.example.bacalog.data.model.BacaanRequest
 import com.example.bacalog.data.model.DashboardStatistikResponse
 import com.example.bacalog.data.model.GenericResponse
 import com.example.bacalog.data.model.KategoriListResponse
@@ -50,4 +52,21 @@ interface ApiService {
 
     @DELETE("kategori/{id}")
     suspend fun deleteKategori(@Path("id") id: Int): Response<GenericResponse>
+
+    // CRUDS 2: Bahan Bacaan
+    @GET("bacaan")
+    suspend fun getBacaanList(
+        @Query("search") search: String? = null,
+        @Query("kategori_id") kategoriId: String? = null,
+        @Query("status_baca") statusBaca: String? = null
+    ): Response<BacaanListResponse>
+
+    @POST("bacaan")
+    suspend fun createBacaan(@Body request: BacaanRequest): Response<GenericResponse>
+
+    @PUT("bacaan/{id}")
+    suspend fun updateBacaan(@Path("id") id: Int, @Body request: BacaanRequest): Response<GenericResponse>
+
+    @DELETE("bacaan/{id}")
+    suspend fun deleteBacaan(@Path("id") id: Int): Response<GenericResponse>
 }

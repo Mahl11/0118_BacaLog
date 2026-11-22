@@ -106,4 +106,35 @@
     <string name="desc_hapus_kategori">Hapus kategori</string>
     <string name="desc_ubah_kategori">Ubah kategori</string>
     <string name="desc_clear_search">Hapus pencarian</string>
+
+    <!-- Modul Bahan Bacaan (CRUDS 2) -->
+    <string name="bacaan_search_placeholder">Cari judul atau penulis/sumber...</string>
+    <string name="bacaan_kosong_judul">Belum Ada Bahan Bacaan</string>
+    <string name="bacaan_kosong_desc">Mulai tambahkan slide kuliah, modul lab, atau buku dengan menekan tombol + di bawah</string>
+    <string name="bacaan_tidak_ditemukan">Bahan bacaan tidak ditemukan</string>
+    <string name="bacaan_tambah_judul">Tambah Bahan Bacaan</string>
+    <string name="bacaan_edit_judul">Ubah Bahan Bacaan</string>
+    <string name="bacaan_judul_label">Judul Bahan Bacaan</string>
+    <string name="bacaan_judul_placeholder">Contoh: Slide Pertemuan 9 - Room DB</string>
+    <string name="bacaan_penulis_label">Penulis / Sumber Belajar</string>
+    <string name="bacaan_penulis_placeholder">Contoh: Dosen PAM UMY</string>
+    <string name="bacaan_halaman_label">Total Halaman / Slide</string>
+    <string name="bacaan_halaman_placeholder">Contoh: 35</string>
+    <string name="bacaan_kategori_label">Kategori Topik / Mata Kuliah</string>
+    <string name="bacaan_kategori_pilih">Pilih Kategori</string>
+    <string name="bacaan_status_label">Status Baca</string>
+    <string name="bacaan_status_semua">Semua</string>
+    <string name="bacaan_status_belum">Belum Dibaca</string>
+    <string name="bacaan_status_sedang">Sedang Dibaca</string>
+    <string name="bacaan_status_selesai">Selesai</string>
+    <string name="bacaan_hapus_konfirmasi_judul">Hapus Bahan Bacaan?</string>
+    <string name="bacaan_hapus_konfirmasi_pesan">Apakah Anda yakin ingin menghapus bahan bacaan \"%1$s\"?</string>
+    <string name="bacaan_error_kategori_kosong">Pilih kategori topik terlebih dahulu</string>
+    <string name="bacaan_error_judul_kosong">Judul bahan bacaan tidak boleh kosong</string>
+    <string name="bacaan_error_penulis_kosong">Penulis atau sumber belajar tidak boleh kosong</string>
+    <string name="bacaan_error_halaman_invalid">Total halaman harus berupa angka lebih dari 0</string>
+    <string name="bacaan_progres_halaman">Capaian: %1$d / %2$d Halaman</string>
+    <string name="fab_tambah_bacaan">Tambah Bahan Bacaan</string>
+    <string name="desc_hapus_bacaan">Hapus bahan bacaan</string>
+    <string name="desc_ubah_bacaan">Ubah bahan bacaan</string>
 </resources>

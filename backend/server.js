@@ -307,6 +307,180 @@ app.delete('/api/kategori/:id', authenticateToken, async (req, res) => {
     }
 });
 
+// ==================== ENDPOINT CRUDS 2: BAHAN BACAAN ====================
+
+// 11. Ambil Daftar & Pencarian Bahan Bacaan (Read & Search)
+app.get('/api/bacaan', authenticateToken, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const search = req.query.search || '';
+        const kategoriId = req.query.kategori_id || '';
+        const statusBaca = req.query.status_baca || '';
+
+        let sql = `
+            SELECT b.id, b.user_id, b.kategori_id, b.judul, b.penulis_sumber,
+                   b.total_halaman, b.status_baca, b.created_at,
+                   k.nama_topik AS nama_kategori,
+                   COALESCE(MAX(cp.halaman_dicapai), 0) AS halaman_terakhir
+            FROM bahan_bacaan b
+            JOIN kategori_topik k ON b.kategori_id = k.id
+            LEFT JOIN catatan_progres cp ON cp.bacaan_id = b.id
+            WHERE b.user_id = ?
+        `;
+        const params = [userId];
+
+        if (search.trim() !== '') {
+            sql += ' AND (b.judul LIKE ? OR b.penulis_sumber LIKE ?)';
+            const term = `%${search.trim()}%`;
+            params.push(term, term);
+        }
+
+        if (kategoriId.trim() !== '') {
+            sql += ' AND b.kategori_id = ?';
+            params.push(kategoriId.trim());
+        }
+
+        if (statusBaca.trim() !== '' && statusBaca !== 'Semua') {
+            sql += ' AND b.status_baca = ?';
+            params.push(statusBaca.trim());
+        }
+
+        sql += ' GROUP BY b.id ORDER BY b.id DESC';
+
+        const [rows] = await dbPool.query(sql, params);
+        res.json({
+            status: 'success',
+            data: rows
+        });
+    } catch (error) {
+        res.status(500).json({ status: 'error', message: error.message });
+    }
+});
+
+// 12. Tambah Bahan Bacaan Baru (Create)
+app.post('/api/bacaan', authenticateToken, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const { kategori_id, judul, penulis_sumber, total_halaman, status_baca } = req.body;
+
+        if (!kategori_id || !judul || !penulis_sumber || !total_halaman) {
+            return res.status(400).json({
+                status: 'error',
+                message: 'Kategori, judul, penulis/sumber, dan total halaman wajib diisi'
+            });
+        }
+
+        const hal = parseInt(total_halaman, 10);
+        if (isNaN(hal) || hal <= 0) {
+            return res.status(400).json({
+                status: 'error',
+                message: 'Total halaman harus berupa angka positif'
+            });
+        }
+
+        // Validasi kepemilikan kategori
+        const [katCheck] = await dbPool.query(
+            'SELECT id FROM kategori_topik WHERE id = ? AND user_id = ?',
+            [kategori_id, userId]
+        );
+        if (katCheck.length === 0) {
+            return res.status(400).json({
+                status: 'error',
+                message: 'Kategori topik yang dipilih tidak valid'
+            });
+        }
+
+        const statusValid = ['Belum Dibaca', 'Sedang Dibaca', 'Selesai'];
+        const statusFinal = statusValid.includes(status_baca) ? status_baca : 'Belum Dibaca';
+
+        const [result] = await dbPool.query(
+            'INSERT INTO bahan_bacaan (user_id, kategori_id, judul, penulis_sumber, total_halaman, status_baca) VALUES (?, ?, ?, ?, ?, ?)',
+            [userId, kategori_id, judul.trim(), penulis_sumber.trim(), hal, statusFinal]
+        );
+
+        res.status(201).json({
+            status: 'success',
+            message: 'Bahan bacaan berhasil ditambahkan',
+            id: result.insertId
+        });
+    } catch (error) {
+        res.status(500).json({ status: 'error', message: error.message });
+    }
+});
+
+// 13. Perbarui Bahan Bacaan (Update)
+app.put('/api/bacaan/:id', authenticateToken, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const bacaanId = req.params.id;
+        const { kategori_id, judul, penulis_sumber, total_halaman, status_baca } = req.body;
+
+        if (!kategori_id || !judul || !penulis_sumber || !total_halaman) {
+            return res.status(400).json({
+                status: 'error',
+                message: 'Kategori, judul, penulis/sumber, dan total halaman wajib diisi'
+            });
+        }
+
+        const hal = parseInt(total_halaman, 10);
+        if (isNaN(hal) || hal <= 0) {
+            return res.status(400).json({
+                status: 'error',
+                message: 'Total halaman harus berupa angka positif'
+            });
+        }
+
+        const statusValid = ['Belum Dibaca', 'Sedang Dibaca', 'Selesai'];
+        const statusFinal = statusValid.includes(status_baca) ? status_baca : 'Belum Dibaca';
+
+        const [result] = await dbPool.query(
+            'UPDATE bahan_bacaan SET kategori_id = ?, judul = ?, penulis_sumber = ?, total_halaman = ?, status_baca = ? WHERE id = ? AND user_id = ?',
+            [kategori_id, judul.trim(), penulis_sumber.trim(), hal, statusFinal, bacaanId, userId]
+        );
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({
+                status: 'error',
+                message: 'Bahan bacaan tidak ditemukan atau bukan milik Anda'
+            });
+        }
+
+        res.json({
+            status: 'success',
+            message: 'Bahan bacaan berhasil diperbarui'
+        });
+    } catch (error) {
+        res.status(500).json({ status: 'error', message: error.message });
+    }
+});
+
+// 14. Hapus Bahan Bacaan (Delete)
+app.delete('/api/bacaan/:id', authenticateToken, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const bacaanId = req.params.id;
+
+        const [result] = await dbPool.query(
+            'DELETE FROM bahan_bacaan WHERE id = ? AND user_id = ?',
+            [bacaanId, userId]
+        );
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({
+                status: 'error',
+                message: 'Bahan bacaan tidak ditemukan atau bukan milik Anda'
+            });
+        }
+
+        res.json({
+            status: 'success',
+            message: 'Bahan bacaan berhasil dihapus'
+        });
+    } catch (error) {
+        res.status(500).json({ status: 'error', message: error.message });
+    }
+});
+
 // Jalankan Server
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`[BacaLog API] Server aktif di port ${PORT}`);
