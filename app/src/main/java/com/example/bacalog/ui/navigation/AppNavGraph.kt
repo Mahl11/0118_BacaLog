@@ -6,6 +6,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.bacalog.ui.screens.auth.LoginScreen
 import com.example.bacalog.ui.screens.auth.RegisterScreen
 import com.example.bacalog.ui.screens.bacaan.BacaanListScreen
@@ -17,11 +19,13 @@ import com.example.bacalog.ui.screens.progres.ProgresListScreen
 import com.example.bacalog.ui.screens.target.TargetListScreen
 import com.example.bacalog.viewmodel.AuthViewModel
 import com.example.bacalog.viewmodel.HomeViewModel
+import com.example.bacalog.viewmodel.KategoriViewModel
 
 @Composable
 fun AppNavGraph(
     authViewModel: AuthViewModel,
     homeViewModel: HomeViewModel,
+    factory: ViewModelProvider.Factory,
     startDestination: String,
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController()
@@ -79,7 +83,9 @@ fun AppNavGraph(
         }
 
         composable(Screen.Kategori.route) {
+            val kategoriViewModel: KategoriViewModel = viewModel(factory = factory)
             KategoriListScreen(
+                viewModel = kategoriViewModel,
                 onNavigateBack = { navController.popBackStack() }
             )
         }

@@ -195,6 +195,118 @@ app.get('/api/dashboard/statistik', authenticateToken, async (req, res) => {
     }
 });
 
+// ==================== ENDPOINT CRUDS 1: KATEGORI TOPIK ====================
+
+// 7. Ambil Daftar & Pencarian Kategori Topik (Read & Search)
+app.get('/api/kategori', authenticateToken, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const search = req.query.search || '';
+
+        let sql = `
+            SELECT k.id, k.user_id, k.nama_topik, k.deskripsi, k.created_at,
+                   COUNT(b.id) AS total_bacaan
+            FROM kategori_topik k
+            LEFT JOIN bahan_bacaan b ON b.kategori_id = k.id
+            WHERE k.user_id = ?
+        `;
+        const params = [userId];
+
+        if (search.trim() !== '') {
+            sql += ' AND k.nama_topik LIKE ?';
+            params.push(`%${search.trim()}%`);
+        }
+
+        sql += ' GROUP BY k.id ORDER BY k.id DESC';
+
+        const [rows] = await dbPool.query(sql, params);
+        res.json({
+            status: 'success',
+            data: rows
+        });
+    } catch (error) {
+        res.status(500).json({ status: 'error', message: error.message });
+    }
+});
+
+// 8. Tambah Kategori Topik Baru (Create)
+app.post('/api/kategori', authenticateToken, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const { nama_topik, deskripsi } = req.body;
+
+        if (!nama_topik || nama_topik.trim() === '') {
+            return res.status(400).json({ status: 'error', message: 'Nama kategori topik wajib diisi' });
+        }
+
+        const [result] = await dbPool.query(
+            'INSERT INTO kategori_topik (user_id, nama_topik, deskripsi) VALUES (?, ?, ?)',
+            [userId, nama_topik.trim(), deskripsi ? deskripsi.trim() : null]
+        );
+
+        res.status(201).json({
+            status: 'success',
+            message: 'Kategori topik berhasil ditambahkan',
+            id: result.insertId
+        });
+    } catch (error) {
+        res.status(500).json({ status: 'error', message: error.message });
+    }
+});
+
+// 9. Perbarui Kategori Topik (Update)
+app.put('/api/kategori/:id', authenticateToken, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const kategoriId = req.params.id;
+        const { nama_topik, deskripsi } = req.body;
+
+        if (!nama_topik || nama_topik.trim() === '') {
+            return res.status(400).json({ status: 'error', message: 'Nama kategori topik wajib diisi' });
+        }
+
+        const [result] = await dbPool.query(
+            'UPDATE kategori_topik SET nama_topik = ?, deskripsi = ? WHERE id = ? AND user_id = ?',
+            [nama_topik.trim(), deskripsi ? deskripsi.trim() : null, kategoriId, userId]
+        );
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ status: 'error', message: 'Kategori tidak ditemukan atau bukan milik Anda' });
+        }
+
+        res.json({
+            status: 'success',
+            message: 'Kategori topik berhasil diperbarui'
+        });
+    } catch (error) {
+        res.status(500).json({ status: 'error', message: error.message });
+    }
+});
+
+// 10. Hapus Kategori Topik (Delete)
+app.delete('/api/kategori/:id', authenticateToken, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const kategoriId = req.params.id;
+
+        const [result] = await dbPool.query(
+            'DELETE FROM kategori_topik WHERE id = ? AND user_id = ?',
+            [kategoriId, userId]
+        );
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ status: 'error', message: 'Kategori tidak ditemukan atau bukan milik Anda' });
+        }
+
+        res.json({
+            status: 'success',
+            message: 'Kategori topik berhasil dihapus'
+        });
+    } catch (error) {
+        res.status(500).json({ status: 'error', message: error.message });
+    }
+});
+
 // Jalankan Server
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`[BacaLog API] Server aktif di port ${PORT}`);

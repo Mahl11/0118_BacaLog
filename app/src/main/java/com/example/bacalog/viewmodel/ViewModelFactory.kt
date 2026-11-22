@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.bacalog.data.local.TokenManager
 import com.example.bacalog.data.remote.RetrofitClient
 import com.example.bacalog.data.repository.AuthRepository
+import com.example.bacalog.data.repository.KategoriRepository
 
 class ViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
@@ -21,6 +22,10 @@ class ViewModelFactory(private val context: Context) : ViewModelProvider.Factory
             }
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
                 HomeViewModel(apiService) as T
+            }
+            modelClass.isAssignableFrom(KategoriViewModel::class.java) -> {
+                val kategoriRepository = KategoriRepository(apiService)
+                KategoriViewModel(kategoriRepository) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }

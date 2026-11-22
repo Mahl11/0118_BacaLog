@@ -48,6 +48,7 @@ class MainActivity : ComponentActivity() {
                         AppNavGraph(
                             authViewModel = authViewModel,
                             homeViewModel = homeViewModel,
+                            factory = factory,
                             startDestination = Screen.Home.route
                         )
                     }
@@ -55,6 +56,7 @@ class MainActivity : ComponentActivity() {
                         AppNavGraph(
                             authViewModel = authViewModel,
                             homeViewModel = homeViewModel,
+                            factory = factory,
                             startDestination = Screen.Login.route
                         )
                     }

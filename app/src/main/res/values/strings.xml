@@ -86,4 +86,24 @@
     <string name="nav_bacaan">Bacaan</string>
     <string name="nav_progres">Progres</string>
     <string name="nav_profil">Profil</string>
+
+    <!-- Modul Kategori Topik (CRUDS 1) -->
+    <string name="kategori_search_placeholder">Cari kategori topik...</string>
+    <string name="kategori_kosong_judul">Belum Ada Kategori Topik</string>
+    <string name="kategori_kosong_desc">Tambahkan kelompok mata kuliah pertama Anda dengan menekan tombol + di bawah</string>
+    <string name="kategori_tidak_ditemukan">Kategori topik tidak ditemukan</string>
+    <string name="kategori_tambah_judul">Tambah Kategori Topik</string>
+    <string name="kategori_edit_judul">Ubah Kategori Topik</string>
+    <string name="kategori_nama_label">Nama Topik / Mata Kuliah</string>
+    <string name="kategori_nama_placeholder">Contoh: Pengembangan Aplikasi Mobile</string>
+    <string name="kategori_deskripsi_label">Deskripsi (Opsional)</string>
+    <string name="kategori_deskripsi_placeholder">Contoh: Materi kuliah semester 5 UMY</string>
+    <string name="kategori_error_nama_kosong">Nama kategori topik tidak boleh kosong</string>
+    <string name="kategori_hapus_konfirmasi_judul">Hapus Kategori Topik?</string>
+    <string name="kategori_hapus_konfirmasi_pesan">Apakah Anda yakin ingin menghapus kategori \"%1$s\"? Bahan bacaan di dalamnya juga akan terhapus.</string>
+    <string name="total_bacaan_format">%1$d Bahan Bacaan</string>
+    <string name="fab_tambah_kategori">Tambah Kategori</string>
+    <string name="desc_hapus_kategori">Hapus kategori</string>
+    <string name="desc_ubah_kategori">Ubah kategori</string>
+    <string name="desc_clear_search">Hapus pencarian</string>
 </resources>
