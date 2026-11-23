@@ -30,6 +30,12 @@ class TokenManager(private val context: Context) {
         }
     }
 
+    suspend fun updateAccessToken(newAccessToken: String) {
+        context.dataStore.edit { preferences ->
+            preferences[KEY_ACCESS_TOKEN] = newAccessToken
+        }
+    }
+
     suspend fun clearTokens() {
         context.dataStore.edit { preferences ->
             preferences.remove(KEY_ACCESS_TOKEN)
