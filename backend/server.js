@@ -481,6 +481,180 @@ app.delete('/api/bacaan/:id', authenticateToken, async (req, res) => {
     }
 });
 
+// ==================== ENDPOINT CRUDS 3: CATATAN PROGRES ====================
+
+// 15. Ambil Riwayat & Pencarian Catatan Progres (Read & Search)
+app.get('/api/progres', authenticateToken, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const search = req.query.search || '';
+        const bacaanId = req.query.bacaan_id || '';
+
+        let sql = `
+            SELECT cp.id, cp.user_id, cp.bacaan_id, cp.tanggal_baca,
+                   cp.halaman_dicapai, cp.ringkasan_materi, cp.target_harian, cp.created_at,
+                   b.judul AS judul_bacaan, b.total_halaman,
+                   k.nama_topik AS nama_kategori
+            FROM catatan_progres cp
+            JOIN bahan_bacaan b ON cp.bacaan_id = b.id
+            JOIN kategori_topik k ON b.kategori_id = k.id
+            WHERE cp.user_id = ?
+        `;
+        const params = [userId];
+
+        if (search.trim() !== '') {
+            sql += ' AND (cp.ringkasan_materi LIKE ? OR cp.tanggal_baca LIKE ? OR b.judul LIKE ?)';
+            const term = `%${search.trim()}%`;
+            params.push(term, term, term);
+        }
+
+        if (bacaanId.trim() !== '') {
+            sql += ' AND cp.bacaan_id = ?';
+            params.push(bacaanId.trim());
+        }
+
+        sql += ' ORDER BY cp.id DESC';
+
+        const [rows] = await dbPool.query(sql, params);
+        res.json({
+            status: 'success',
+            data: rows
+        });
+    } catch (error) {
+        res.status(500).json({ status: 'error', message: error.message });
+    }
+});
+
+// 16. Tambah Catatan Progres Baru (Create)
+app.post('/api/progres', authenticateToken, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const { bacaan_id, tanggal_baca, halaman_dicapai, ringkasan_materi, target_harian } = req.body;
+
+        if (!bacaan_id || !tanggal_baca || halaman_dicapai === undefined || !ringkasan_materi) {
+            return res.status(400).json({
+                status: 'error',
+                message: 'Bahan bacaan, tanggal baca, halaman dicapai, dan ringkasan materi wajib diisi'
+            });
+        }
+
+        const hal = parseInt(halaman_dicapai, 10);
+        if (isNaN(hal) || hal < 0) {
+            return res.status(400).json({
+                status: 'error',
+                message: 'Halaman dicapai harus berupa angka positif atau nol'
+            });
+        }
+
+        const target = target_harian ? parseInt(target_harian, 10) : hal;
+
+        // Validasi kepemilikan bahan bacaan
+        const [bacaanCheck] = await dbPool.query(
+            'SELECT id, total_halaman, status_baca FROM bahan_bacaan WHERE id = ? AND user_id = ?',
+            [bacaan_id, userId]
+        );
+        if (bacaanCheck.length === 0) {
+            return res.status(400).json({
+                status: 'error',
+                message: 'Bahan bacaan yang dipilih tidak valid'
+            });
+        }
+
+        const [result] = await dbPool.query(
+            'INSERT INTO catatan_progres (user_id, bacaan_id, tanggal_baca, halaman_dicapai, ringkasan_materi, target_harian) VALUES (?, ?, ?, ?, ?, ?)',
+            [userId, bacaan_id, tanggal_baca.trim(), hal, ringkasan_materi.trim(), isNaN(target) ? 0 : target]
+        );
+
+        // Otomatis update status bahan bacaan jika halaman dicapai >= total halaman
+        const bacaanItem = bacaanCheck[0];
+        if (hal >= bacaanItem.total_halaman && bacaanItem.status_baca !== 'Selesai') {
+            await dbPool.query('UPDATE bahan_bacaan SET status_baca = "Selesai" WHERE id = ?', [bacaan_id]);
+        } else if (hal > 0 && bacaanItem.status_baca === 'Belum Dibaca') {
+            await dbPool.query('UPDATE bahan_bacaan SET status_baca = "Sedang Dibaca" WHERE id = ?', [bacaan_id]);
+        }
+
+        res.status(201).json({
+            status: 'success',
+            message: 'Catatan progres berhasil ditambahkan',
+            id: result.insertId
+        });
+    } catch (error) {
+        res.status(500).json({ status: 'error', message: error.message });
+    }
+});
+
+// 17. Perbarui Catatan Progres (Update)
+app.put('/api/progres/:id', authenticateToken, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const progresId = req.params.id;
+        const { bacaan_id, tanggal_baca, halaman_dicapai, ringkasan_materi, target_harian } = req.body;
+
+        if (!bacaan_id || !tanggal_baca || halaman_dicapai === undefined || !ringkasan_materi) {
+            return res.status(400).json({
+                status: 'error',
+                message: 'Bahan bacaan, tanggal baca, halaman dicapai, dan ringkasan materi wajib diisi'
+            });
+        }
+
+        const hal = parseInt(halaman_dicapai, 10);
+        if (isNaN(hal) || hal < 0) {
+            return res.status(400).json({
+                status: 'error',
+                message: 'Halaman dicapai harus berupa angka positif atau nol'
+            });
+        }
+
+        const target = target_harian ? parseInt(target_harian, 10) : hal;
+
+        const [result] = await dbPool.query(
+            'UPDATE catatan_progres SET bacaan_id = ?, tanggal_baca = ?, halaman_dicapai = ?, ringkasan_materi = ?, target_harian = ? WHERE id = ? AND user_id = ?',
+            [bacaan_id, tanggal_baca.trim(), hal, ringkasan_materi.trim(), isNaN(target) ? 0 : target, progresId, userId]
+        );
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({
+                status: 'error',
+                message: 'Catatan progres tidak ditemukan atau bukan milik Anda'
+            });
+        }
+
+        res.json({
+            status: 'success',
+            message: 'Catatan progres berhasil diperbarui'
+        });
+    } catch (error) {
+        res.status(500).json({ status: 'error', message: error.message });
+    }
+});
+
+// 18. Hapus Catatan Progres (Delete)
+app.delete('/api/progres/:id', authenticateToken, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const progresId = req.params.id;
+
+        const [result] = await dbPool.query(
+            'DELETE FROM catatan_progres WHERE id = ? AND user_id = ?',
+            [progresId, userId]
+        );
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({
+                status: 'error',
+                message: 'Catatan progres tidak ditemukan atau bukan milik Anda'
+            });
+        }
+
+        res.json({
+            status: 'success',
+            message: 'Catatan progres berhasil dihapus'
+        });
+    } catch (error) {
+        res.status(500).json({ status: 'error', message: error.message });
+    }
+});
+
 // Jalankan Server
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`[BacaLog API] Server aktif di port ${PORT}`);

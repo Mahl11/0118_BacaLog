@@ -8,6 +8,7 @@ import com.example.bacalog.data.remote.RetrofitClient
 import com.example.bacalog.data.repository.AuthRepository
 import com.example.bacalog.data.repository.BacaanRepository
 import com.example.bacalog.data.repository.KategoriRepository
+import com.example.bacalog.data.repository.ProgresRepository
 
 class ViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
@@ -32,6 +33,11 @@ class ViewModelFactory(private val context: Context) : ViewModelProvider.Factory
                 val bacaanRepository = BacaanRepository(apiService)
                 val kategoriRepository = KategoriRepository(apiService)
                 BacaanViewModel(bacaanRepository, kategoriRepository) as T
+            }
+            modelClass.isAssignableFrom(ProgresViewModel::class.java) -> {
+                val progresRepository = ProgresRepository(apiService)
+                val bacaanRepository = BacaanRepository(apiService)
+                ProgresViewModel(progresRepository, bacaanRepository) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }

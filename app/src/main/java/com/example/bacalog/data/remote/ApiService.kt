@@ -8,6 +8,8 @@ import com.example.bacalog.data.model.GenericResponse
 import com.example.bacalog.data.model.KategoriListResponse
 import com.example.bacalog.data.model.KategoriRequest
 import com.example.bacalog.data.model.LoginRequest
+import com.example.bacalog.data.model.ProgresListResponse
+import com.example.bacalog.data.model.ProgresRequest
 import com.example.bacalog.data.model.RefreshTokenRequest
 import com.example.bacalog.data.model.RefreshTokenResponse
 import com.example.bacalog.data.model.RegisterRequest
@@ -69,4 +71,20 @@ interface ApiService {
 
     @DELETE("bacaan/{id}")
     suspend fun deleteBacaan(@Path("id") id: Int): Response<GenericResponse>
+
+    // CRUDS 3: Catatan Progres
+    @GET("progres")
+    suspend fun getProgresList(
+        @Query("search") search: String? = null,
+        @Query("bacaan_id") bacaanId: String? = null
+    ): Response<ProgresListResponse>
+
+    @POST("progres")
+    suspend fun createProgres(@Body request: ProgresRequest): Response<GenericResponse>
+
+    @PUT("progres/{id}")
+    suspend fun updateProgres(@Path("id") id: Int, @Body request: ProgresRequest): Response<GenericResponse>
+
+    @DELETE("progres/{id}")
+    suspend fun deleteProgres(@Path("id") id: Int): Response<GenericResponse>
 }

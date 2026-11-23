@@ -21,6 +21,7 @@ import com.example.bacalog.viewmodel.AuthViewModel
 import com.example.bacalog.viewmodel.BacaanViewModel
 import com.example.bacalog.viewmodel.HomeViewModel
 import com.example.bacalog.viewmodel.KategoriViewModel
+import com.example.bacalog.viewmodel.ProgresViewModel
 
 @Composable
 fun AppNavGraph(
@@ -105,8 +106,15 @@ fun AppNavGraph(
         }
 
         composable(Screen.Progres.route) {
+            val progresViewModel: ProgresViewModel = viewModel(factory = factory)
             ProgresListScreen(
-                onNavigateBack = { navController.popBackStack() }
+                viewModel = progresViewModel,
+                onNavigateBack = { navController.popBackStack() },
+                onNavigate = { route ->
+                    navController.navigate(route) {
+                        launchSingleTop = true
+                    }
+                }
             )
         }
 

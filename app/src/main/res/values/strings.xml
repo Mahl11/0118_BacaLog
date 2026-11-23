@@ -137,4 +137,33 @@
     <string name="fab_tambah_bacaan">Tambah Bahan Bacaan</string>
     <string name="desc_hapus_bacaan">Hapus bahan bacaan</string>
     <string name="desc_ubah_bacaan">Ubah bahan bacaan</string>
+
+    <!-- Modul Catatan Progres Belajar (CRUDS 3) -->
+    <string name="progres_search_placeholder">Cari materi atau tanggal...</string>
+    <string name="progres_kosong_judul">Belum Ada Catatan Progres</string>
+    <string name="progres_kosong_desc">Mulai catat sesi baca, slide yang diselesaikan, dan intisari materi kuliahmu dengan tombol + di bawah</string>
+    <string name="progres_tidak_ditemukan">Catatan progres tidak ditemukan</string>
+    <string name="progres_tambah_judul">Tambah Catatan Progres</string>
+    <string name="progres_edit_judul">Ubah Catatan Progres</string>
+    <string name="progres_bacaan_label">Pilih Bahan Bacaan</string>
+    <string name="progres_bacaan_pilih">Pilih Buku / Slide</string>
+    <string name="progres_tanggal_label">Tanggal Sesi Belajar (YYYY-MM-DD)</string>
+    <string name="progres_tanggal_placeholder">Contoh: 2026-11-23</string>
+    <string name="progres_halaman_label">Halaman / Slide Dicapai</string>
+    <string name="progres_halaman_placeholder">Contoh: 15</string>
+    <string name="progres_ringkasan_label">Ringkasan / Intisari Materi</string>
+    <string name="progres_ringkasan_placeholder">Tulis pemahaman atau intisari materi yang kamu pelajari...</string>
+    <string name="progres_target_label">Target Harian (Slide/Hal)</string>
+    <string name="progres_target_placeholder">Contoh: 15</string>
+    <string name="progres_hapus_konfirmasi_judul">Hapus Catatan Progres?</string>
+    <string name="progres_hapus_konfirmasi_pesan">Apakah Anda yakin ingin menghapus catatan progres belajar pada tanggal %1$s ini?</string>
+    <string name="progres_error_bacaan_kosong">Pilih bahan bacaan terlebih dahulu</string>
+    <string name="progres_error_tanggal_kosong">Tanggal sesi belajar tidak boleh kosong</string>
+    <string name="progres_error_ringkasan_kosong">Ringkasan materi tidak boleh kosong</string>
+    <string name="progres_error_halaman_invalid">Halaman dicapai harus berupa angka lebih dari 0</string>
+    <string name="progres_badge_halaman">Halaman %1$d</string>
+    <string name="progres_target_badge">Target: %1$d</string>
+    <string name="fab_tambah_progres">Tambah Catatan Progres</string>
+    <string name="desc_hapus_progres">Hapus catatan progres</string>
+    <string name="desc_ubah_progres">Ubah catatan progres</string>
 </resources>
