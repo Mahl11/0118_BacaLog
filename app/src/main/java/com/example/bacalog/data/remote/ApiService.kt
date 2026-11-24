@@ -104,4 +104,30 @@ interface ApiService {
 
     @DELETE("target/{id}")
     suspend fun deleteTarget(@Path("id") id: Int): Response<GenericResponse>
+
+    // CRUDS 5: Profil & Catatan Fokus Belajar
+    @GET("profil")
+    suspend fun getProfil(
+        @Query("search") search: String? = null
+    ): Response<com.example.bacalog.data.model.ProfilResponse>
+
+    @PUT("profil")
+    suspend fun updateProfil(@Body request: com.example.bacalog.data.model.UpdateProfilRequest): Response<GenericResponse>
+
+    @GET("profil/fokus")
+    suspend fun getFokusList(
+        @Query("search") search: String? = null
+    ): Response<com.example.bacalog.data.model.FokusListResponse>
+
+    @POST("profil/fokus")
+    suspend fun createFokus(@Body request: com.example.bacalog.data.model.FokusRequest): Response<GenericResponse>
+
+    @PUT("profil/fokus/{id}")
+    suspend fun updateFokus(
+        @Path("id") id: Int,
+        @Body request: com.example.bacalog.data.model.FokusRequest
+    ): Response<GenericResponse>
+
+    @DELETE("profil/fokus/{id}")
+    suspend fun deleteFokus(@Path("id") id: Int): Response<GenericResponse>
 }

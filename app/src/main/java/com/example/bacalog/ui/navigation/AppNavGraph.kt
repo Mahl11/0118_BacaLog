@@ -21,6 +21,7 @@ import com.example.bacalog.viewmodel.AuthViewModel
 import com.example.bacalog.viewmodel.BacaanViewModel
 import com.example.bacalog.viewmodel.HomeViewModel
 import com.example.bacalog.viewmodel.KategoriViewModel
+import com.example.bacalog.viewmodel.ProfilViewModel
 import com.example.bacalog.viewmodel.ProgresViewModel
 import com.example.bacalog.viewmodel.TargetViewModel
 
@@ -128,8 +129,24 @@ fun AppNavGraph(
         }
 
         composable(Screen.Profil.route) {
+            val profilViewModel: ProfilViewModel = viewModel(factory = factory)
             ProfilScreen(
-                onNavigateBack = { navController.popBackStack() }
+                viewModel = profilViewModel,
+                onNavigateBack = { navController.popBackStack() },
+                onNavigate = { route ->
+                    if (route != Screen.Profil.route) {
+                        navController.navigate(route) {
+                            popUpTo(Screen.Home.route) { saveState = true }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    }
+                },
+                onLogoutSuccess = {
+                    navController.navigate(Screen.Login.route) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                }
             )
         }
 

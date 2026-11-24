@@ -195,4 +195,46 @@
     <string name="fab_tambah_target">Tambah Target Baca</string>
     <string name="desc_hapus_target">Hapus target baca</string>
     <string name="desc_ubah_target">Ubah target baca</string>
+
+    <!-- Modul Profil dan Catatan Fokus Belajar (CRUDS 5) -->
+    <string name="profil_info_akun_judul">Informasi Akun</string>
+    <string name="profil_badge_peran">Pembelajar Mandiri</string>
+    <string name="profil_bio_label">Bio dan Motivasi Belajar</string>
+    <string name="profil_bio_default">Belum ada bio belajar. Klik tombol ubah profil untuk menambahkan tujuan belajarmu.</string>
+    <string name="profil_bergabung_format">Bergabung sejak: %1$s</string>
+    <string name="profil_btn_edit">Ubah Profil</string>
+    <string name="profil_dialog_edit_judul">Ubah Informasi Profil</string>
+    <string name="profil_password_lama_label">Kata Sandi Lama (Opsional)</string>
+    <string name="profil_password_lama_placeholder">Masukkan kata sandi lama jika ingin mengganti</string>
+    <string name="profil_password_baru_label">Kata Sandi Baru (Opsional)</string>
+    <string name="profil_password_baru_placeholder">Minimal 6 karakter</string>
+    <string name="profil_fokus_section_judul">Catatan Fokus Belajar</string>
+    <string name="profil_fokus_section_desc">Kelola skill atau topik spesifik yang sedang Anda prioritaskan</string>
+    <string name="fokus_search_placeholder">Cari materi fokus...</string>
+    <string name="fokus_kosong_judul">Belum Ada Catatan Fokus</string>
+    <string name="fokus_kosong_desc">Tentukan topik atau keahlian yang ingin Anda perdalam dengan menekan tombol + di bawah</string>
+    <string name="fokus_tidak_ditemukan">Catatan fokus tidak ditemukan</string>
+    <string name="fokus_tidak_ditemukan_desc">Tidak ada catatan fokus belajar yang sesuai dengan kata kunci Anda.</string>
+    <string name="fokus_tambah_judul">Tambah Catatan Fokus</string>
+    <string name="fokus_edit_judul">Ubah Catatan Fokus</string>
+    <string name="fokus_materi_label">Topik Materi / Skill Fokus</string>
+    <string name="fokus_materi_placeholder">Contoh: Jetpack Compose Navigation dan StateFlow</string>
+    <string name="fokus_keterangan_label">Rencana / Catatan Tambahan (Opsional)</string>
+    <string name="fokus_keterangan_placeholder">Contoh: Membaca dokumentasi resmi dan latihan arsitektur MVVM</string>
+    <string name="fokus_target_label">Target Selesai (YYYY-MM-DD)</string>
+    <string name="fokus_target_placeholder">Contoh: 2026-11-30</string>
+    <string name="fokus_status_label">Status Fokus</string>
+    <string name="fokus_status_semua">Semua</string>
+    <string name="fokus_status_aktif">Aktif</string>
+    <string name="fokus_status_selesai">Selesai</string>
+    <string name="fokus_target_format">Target: %1$s</string>
+    <string name="fokus_hapus_konfirmasi_judul">Hapus Catatan Fokus?</string>
+    <string name="fokus_hapus_konfirmasi_pesan">Apakah Anda yakin ingin menghapus catatan fokus \"%1$s\" ini?</string>
+    <string name="fab_tambah_fokus">Tambah Fokus</string>
+    <string name="desc_hapus_fokus">Hapus catatan fokus</string>
+    <string name="desc_ubah_fokus">Ubah catatan fokus</string>
+    <string name="desc_toggle_fokus">Tandai selesai atau aktifkan kembali</string>
+    <string name="btn_keluar_akun">Keluar dari Akun</string>
+    <string name="dialog_logout_judul">Konfirmasi Keluar Akun</string>
+    <string name="dialog_logout_pesan">Apakah Anda yakin ingin keluar dari aplikasi BacaLog? Anda perlu masuk kembali untuk mengakses data Anda.</string>
 </resources>
