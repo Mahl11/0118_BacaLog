@@ -13,6 +13,8 @@ import com.example.bacalog.data.model.ProgresRequest
 import com.example.bacalog.data.model.RefreshTokenRequest
 import com.example.bacalog.data.model.RefreshTokenResponse
 import com.example.bacalog.data.model.RegisterRequest
+import com.example.bacalog.data.model.TargetListResponse
+import com.example.bacalog.data.model.TargetRequest
 import com.example.bacalog.data.model.UserDto
 import retrofit2.Response
 import retrofit2.http.Body
@@ -87,4 +89,19 @@ interface ApiService {
 
     @DELETE("progres/{id}")
     suspend fun deleteProgres(@Path("id") id: Int): Response<GenericResponse>
+
+    // CRUDS 4: Target Baca
+    @GET("target")
+    suspend fun getTargetList(
+        @Query("search") search: String? = null
+    ): Response<TargetListResponse>
+
+    @POST("target")
+    suspend fun createTarget(@Body request: TargetRequest): Response<GenericResponse>
+
+    @PUT("target/{id}")
+    suspend fun updateTarget(@Path("id") id: Int, @Body request: TargetRequest): Response<GenericResponse>
+
+    @DELETE("target/{id}")
+    suspend fun deleteTarget(@Path("id") id: Int): Response<GenericResponse>
 }

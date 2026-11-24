@@ -236,6 +236,7 @@ fun BacaanListScreen(
                     }
                 }
                 is BacaanUiState.Empty -> {
+                    val isSearching = searchQuery.trim().isNotEmpty()
                     Box(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
@@ -246,19 +247,19 @@ fun BacaanListScreen(
                             modifier = Modifier.padding(dimensionResource(R.dimen.padding_large))
                         ) {
                             Icon(
-                                imageVector = Icons.AutoMirrored.Filled.MenuBook,
+                                imageVector = if (isSearching) Icons.Default.Search else Icons.AutoMirrored.Filled.MenuBook,
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
                                 modifier = Modifier.size(64.dp)
                             )
                             Text(
-                                text = stringResource(R.string.bacaan_kosong_judul),
+                                text = if (isSearching) stringResource(R.string.bacaan_tidak_ditemukan) else stringResource(R.string.bacaan_kosong_judul),
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
                             Text(
-                                text = stringResource(R.string.bacaan_kosong_desc),
+                                text = if (isSearching) stringResource(R.string.bacaan_tidak_ditemukan_desc) else stringResource(R.string.bacaan_kosong_desc),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 textAlign = TextAlign.Center

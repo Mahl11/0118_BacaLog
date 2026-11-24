@@ -22,6 +22,7 @@ import com.example.bacalog.viewmodel.BacaanViewModel
 import com.example.bacalog.viewmodel.HomeViewModel
 import com.example.bacalog.viewmodel.KategoriViewModel
 import com.example.bacalog.viewmodel.ProgresViewModel
+import com.example.bacalog.viewmodel.TargetViewModel
 
 @Composable
 fun AppNavGraph(
@@ -119,7 +120,9 @@ fun AppNavGraph(
         }
 
         composable(Screen.Target.route) {
+            val targetViewModel: TargetViewModel = viewModel(factory = factory)
             TargetListScreen(
+                viewModel = targetViewModel,
                 onNavigateBack = { navController.popBackStack() }
             )
         }

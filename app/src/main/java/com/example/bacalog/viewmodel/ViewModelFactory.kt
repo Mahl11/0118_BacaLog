@@ -9,6 +9,7 @@ import com.example.bacalog.data.repository.AuthRepository
 import com.example.bacalog.data.repository.BacaanRepository
 import com.example.bacalog.data.repository.KategoriRepository
 import com.example.bacalog.data.repository.ProgresRepository
+import com.example.bacalog.data.repository.TargetRepository
 
 class ViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
@@ -38,6 +39,11 @@ class ViewModelFactory(private val context: Context) : ViewModelProvider.Factory
                 val progresRepository = ProgresRepository(apiService)
                 val bacaanRepository = BacaanRepository(apiService)
                 ProgresViewModel(progresRepository, bacaanRepository) as T
+            }
+            modelClass.isAssignableFrom(TargetViewModel::class.java) -> {
+                val targetRepository = TargetRepository(apiService)
+                val bacaanRepository = BacaanRepository(apiService)
+                TargetViewModel(targetRepository, bacaanRepository) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }

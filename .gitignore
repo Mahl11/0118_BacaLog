@@ -11,6 +11,7 @@ app/build/
 .cxx
 local.properties
 AGENTS.md
+STATUS_PROGRES.md
 *.apk
 *.aab
 node_modules/

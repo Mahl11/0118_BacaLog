@@ -108,10 +108,11 @@
     <string name="desc_clear_search">Hapus pencarian</string>
 
     <!-- Modul Bahan Bacaan (CRUDS 2) -->
-    <string name="bacaan_search_placeholder">Cari judul atau penulis/sumber...</string>
+    <string name="bacaan_search_placeholder">Cari judul, mata kuliah, atau sumber...</string>
     <string name="bacaan_kosong_judul">Belum Ada Bahan Bacaan</string>
     <string name="bacaan_kosong_desc">Mulai tambahkan slide kuliah, modul lab, atau buku dengan menekan tombol + di bawah</string>
     <string name="bacaan_tidak_ditemukan">Bahan bacaan tidak ditemukan</string>
+    <string name="bacaan_tidak_ditemukan_desc">Tidak ada bahan bacaan yang cocok dengan kata kunci pencarian Anda.</string>
     <string name="bacaan_tambah_judul">Tambah Bahan Bacaan</string>
     <string name="bacaan_edit_judul">Ubah Bahan Bacaan</string>
     <string name="bacaan_judul_label">Judul Bahan Bacaan</string>
@@ -166,4 +167,32 @@
     <string name="fab_tambah_progres">Tambah Catatan Progres</string>
     <string name="desc_hapus_progres">Hapus catatan progres</string>
     <string name="desc_ubah_progres">Ubah catatan progres</string>
+
+    <!-- Modul Target Baca (CRUDS 4) -->
+    <string name="target_search_placeholder">Cari target atau deadline...</string>
+    <string name="target_kosong_judul">Belum Ada Target Baca</string>
+    <string name="target_kosong_desc">Tetapkan target capaian halaman dan tenggat waktu belajarmu dengan menekan tombol + di bawah</string>
+    <string name="target_tidak_ditemukan">Target baca tidak ditemukan</string>
+    <string name="target_tambah_judul">Tambah Target Baca</string>
+    <string name="target_edit_judul">Ubah Target Baca</string>
+    <string name="target_bacaan_label">Pilih Bahan Bacaan</string>
+    <string name="target_bacaan_pilih">Pilih Buku / Slide</string>
+    <string name="target_halaman_label">Target Capaian Halaman</string>
+    <string name="target_halaman_placeholder">Contoh: 35</string>
+    <string name="target_deadline_label">Tenggat Waktu / Deadline (YYYY-MM-DD)</string>
+    <string name="target_deadline_placeholder">Contoh: 2026-11-30</string>
+    <string name="target_status_label">Status Pencapaian</string>
+    <string name="target_status_semua">Semua</string>
+    <string name="target_status_berjalan">Sedang Berjalan</string>
+    <string name="target_status_tercapai">Tercapai</string>
+    <string name="target_hapus_konfirmasi_judul">Hapus Target Baca?</string>
+    <string name="target_hapus_konfirmasi_pesan">Apakah Anda yakin ingin menghapus target baca untuk \"%1$s\" ini?</string>
+    <string name="target_error_bacaan_kosong">Pilih bahan bacaan terlebih dahulu</string>
+    <string name="target_error_halaman_invalid">Target halaman harus berupa angka lebih dari 0</string>
+    <string name="target_error_deadline_kosong">Tenggat waktu / deadline tidak boleh kosong</string>
+    <string name="target_capaian_format">Target: %1$d Hal (Capaian: %2$d)</string>
+    <string name="target_deadline_format">Deadline: %1$s</string>
+    <string name="fab_tambah_target">Tambah Target Baca</string>
+    <string name="desc_hapus_target">Hapus target baca</string>
+    <string name="desc_ubah_target">Ubah target baca</string>
 </resources>
