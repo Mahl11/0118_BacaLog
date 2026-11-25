@@ -82,6 +82,9 @@ import com.example.bacalog.ui.theme.IndigoContainer
 import com.example.bacalog.ui.theme.SlateCard
 import com.example.bacalog.ui.theme.SuccessGreen
 import com.example.bacalog.ui.theme.WarningAmber
+import androidx.compose.material.icons.filled.Description
+import com.example.bacalog.ui.components.BacaLogBottomBar
+import com.example.bacalog.ui.navigation.Screen
 import com.example.bacalog.viewmodel.TargetUiState
 import com.example.bacalog.viewmodel.TargetViewModel
 
@@ -90,6 +93,7 @@ import com.example.bacalog.viewmodel.TargetViewModel
 fun TargetListScreen(
     viewModel: TargetViewModel,
     onNavigateBack: () -> Unit,
+    onNavigate: (String) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -133,7 +137,22 @@ fun TargetListScreen(
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.surface,
                     titleContentColor = MaterialTheme.colorScheme.onSurface
-                )
+                ),
+                actions = {
+                    IconButton(onClick = { onNavigate(Screen.Laporan.route) }) {
+                        Icon(
+                            imageVector = Icons.Default.Description,
+                            contentDescription = stringResource(R.string.menu_laporan_judul),
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
+            )
+        },
+        bottomBar = {
+            BacaLogBottomBar(
+                currentRoute = Screen.Target.route,
+                onNavigate = onNavigate
             )
         },
         floatingActionButton = {

@@ -125,7 +125,16 @@ fun AppNavGraph(
             val targetViewModel: TargetViewModel = viewModel(factory = factory)
             TargetListScreen(
                 viewModel = targetViewModel,
-                onNavigateBack = { navController.popBackStack() }
+                onNavigateBack = { navController.popBackStack() },
+                onNavigate = { route ->
+                    if (route != Screen.Target.route) {
+                        navController.navigate(route) {
+                            popUpTo(Screen.Home.route) { saveState = true }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    }
+                }
             )
         }
 
