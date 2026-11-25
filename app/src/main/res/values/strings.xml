@@ -237,4 +237,19 @@
     <string name="btn_keluar_akun">Keluar dari Akun</string>
     <string name="dialog_logout_judul">Konfirmasi Keluar Akun</string>
     <string name="dialog_logout_pesan">Apakah Anda yakin ingin keluar dari aplikasi BacaLog? Anda perlu masuk kembali untuk mengakses data Anda.</string>
+
+    <!-- Modul Laporan Penyimpanan Lokal (Poin 9 Pedoman PAM) -->
+    <string name="laporan_banner_judul">Penyimpanan Berkas Internal</string>
+    <string name="laporan_banner_desc">Ekspor rekapitulasi data bacaan, target capaian, dan log progres belajar ke berkas .txt di memori internal (filesDir). Berkas dapat dibaca offline kapan saja.</string>
+    <string name="laporan_btn_ekspor">Ekspor Laporan Baru (.txt)</string>
+    <string name="laporan_section_tersimpan">Berkas Laporan Tersimpan</string>
+    <string name="laporan_kosong_judul">Belum Ada Berkas Laporan</string>
+    <string name="laporan_kosong_desc">Tekan tombol \"Ekspor Laporan Baru (.txt)\" di atas untuk membuat rekapitulasi teks pertama Anda.</string>
+    <string name="laporan_dialog_pratinjau_judul">Pratinjau Isi Laporan</string>
+    <string name="laporan_dialog_tutup">Tutup Pratinjau</string>
+    <string name="laporan_hapus_konfirmasi_judul">Hapus Berkas Laporan?</string>
+    <string name="laporan_hapus_konfirmasi_pesan">Apakah Anda yakin ingin menghapus berkas \"%1$s\" ini dari penyimpanan lokal?</string>
+    <string name="desc_hapus_laporan">Hapus berkas laporan</string>
+    <string name="desc_lihat_laporan">Lihat isi berkas laporan</string>
+    <string name="status_mengekspor">Sedang membuat berkas laporan...</string>
 </resources>

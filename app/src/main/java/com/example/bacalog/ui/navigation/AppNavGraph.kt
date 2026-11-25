@@ -21,6 +21,7 @@ import com.example.bacalog.viewmodel.AuthViewModel
 import com.example.bacalog.viewmodel.BacaanViewModel
 import com.example.bacalog.viewmodel.HomeViewModel
 import com.example.bacalog.viewmodel.KategoriViewModel
+import com.example.bacalog.viewmodel.LaporanViewModel
 import com.example.bacalog.viewmodel.ProfilViewModel
 import com.example.bacalog.viewmodel.ProgresViewModel
 import com.example.bacalog.viewmodel.TargetViewModel
@@ -151,8 +152,19 @@ fun AppNavGraph(
         }
 
         composable(Screen.Laporan.route) {
+            val laporanViewModel: LaporanViewModel = viewModel(factory = factory)
             LaporanLokalScreen(
-                onNavigateBack = { navController.popBackStack() }
+                viewModel = laporanViewModel,
+                onNavigateBack = { navController.popBackStack() },
+                onNavigate = { route ->
+                    if (route != Screen.Laporan.route) {
+                        navController.navigate(route) {
+                            popUpTo(Screen.Home.route) { saveState = true }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    }
+                }
             )
         }
     }

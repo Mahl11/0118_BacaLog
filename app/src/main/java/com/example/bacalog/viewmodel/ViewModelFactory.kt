@@ -50,6 +50,19 @@ class ViewModelFactory(private val context: Context) : ViewModelProvider.Factory
                 val profilRepository = ProfilRepository(apiService)
                 ProfilViewModel(profilRepository, tokenManager) as T
             }
+            modelClass.isAssignableFrom(LaporanViewModel::class.java) -> {
+                val bacaanRepository = BacaanRepository(apiService)
+                val progresRepository = ProgresRepository(apiService)
+                val targetRepository = TargetRepository(apiService)
+                val profilRepository = ProfilRepository(apiService)
+                LaporanViewModel(
+                    bacaanRepository = bacaanRepository,
+                    progresRepository = progresRepository,
+                    targetRepository = targetRepository,
+                    profilRepository = profilRepository,
+                    appContext = appContext
+                ) as T
+            }
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
     }
