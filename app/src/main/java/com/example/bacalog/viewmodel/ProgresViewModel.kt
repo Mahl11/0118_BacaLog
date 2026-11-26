@@ -141,6 +141,10 @@ class ProgresViewModel(
             _dialogError.value = "Tanggal sesi belajar tidak boleh kosong"
             return
         }
+        if (!Regex("""^\d{4}-\d{2}-\d{2}$""").matches(tanggalBaca.trim())) {
+            _dialogError.value = "Format tanggal baca harus YYYY-MM-DD (contoh: 2026-11-23)"
+            return
+        }
         val hal = halamanDicapaiStr.trim().toIntOrNull()
         if (hal == null || hal <= 0) {
             _dialogError.value = "Halaman dicapai harus berupa angka lebih dari 0"

@@ -2,7 +2,6 @@ package com.example.bacalog.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.bacalog.data.local.TokenManager
 import com.example.bacalog.data.model.FokusDto
 import com.example.bacalog.data.model.UserProfilDto
 import com.example.bacalog.data.repository.ProfilRepository
@@ -27,8 +26,7 @@ sealed interface FokusUiState {
 }
 
 class ProfilViewModel(
-    private val profilRepository: ProfilRepository,
-    private val tokenManager: TokenManager
+    private val profilRepository: ProfilRepository
 ) : ViewModel() {
 
     private val _profilUiState = MutableStateFlow<ProfilUiState>(ProfilUiState.Loading)
@@ -162,7 +160,6 @@ class ProfilViewModel(
             val result = profilRepository.updateProfil(
                 nama = nama.trim(),
                 bioBelajar = bio?.trim()?.ifBlank { null },
-                catatanFokus = null,
                 passwordLama = passwordLama?.trim()?.ifBlank { null },
                 passwordBaru = passwordBaru?.trim()?.ifBlank { null }
             )
@@ -202,6 +199,11 @@ class ProfilViewModel(
     ) {
         if (fokusMateri.trim().isBlank()) {
             _dialogError.value = "Materi fokus belajar tidak boleh kosong"
+            return
+        }
+        val targetTrimmed = targetSelesai?.trim()?.ifBlank { null }
+        if (targetTrimmed != null && !Regex("""^\d{4}-\d{2}-\d{2}$""").matches(targetTrimmed)) {
+            _dialogError.value = "Format target selesai harus YYYY-MM-DD (contoh: 2026-11-30)"
             return
         }
 
@@ -287,10 +289,7 @@ class ProfilViewModel(
     }
 
     fun logout(onLogoutSuccess: () -> Unit) {
-        viewModelScope.launch {
-            tokenManager.clearTokens()
-            closeLogoutDialog()
-            onLogoutSuccess()
-        }
+        closeLogoutDialog()
+        onLogoutSuccess()
     }
 }

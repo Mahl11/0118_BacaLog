@@ -79,7 +79,6 @@ import com.example.bacalog.R
 import com.example.bacalog.data.model.BacaanDto
 import com.example.bacalog.data.model.TargetDto
 import com.example.bacalog.ui.theme.IndigoContainer
-import com.example.bacalog.ui.theme.SlateCard
 import com.example.bacalog.ui.theme.SuccessGreen
 import com.example.bacalog.ui.theme.WarningAmber
 import androidx.compose.material.icons.filled.Description
@@ -263,7 +262,7 @@ fun TargetListScreen(
                                 .align(Alignment.Center)
                                 .padding(dimensionResource(R.dimen.padding_large)),
                             shape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius)),
-                            colors = CardDefaults.cardColors(containerColor = SlateCard)
+                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
                         ) {
                             Column(
                                 modifier = Modifier
@@ -783,6 +782,10 @@ fun TargetFormDialog(
                     }
                     if (deadlineText.isBlank()) {
                         localValidationError = "Tenggat waktu / deadline tidak boleh kosong"
+                        return@Button
+                    }
+                    if (!Regex("""^\d{4}-\d{2}-\d{2}$""").matches(deadlineText.trim())) {
+                        localValidationError = "Format deadline harus YYYY-MM-DD (contoh: 2026-11-30)"
                         return@Button
                     }
 

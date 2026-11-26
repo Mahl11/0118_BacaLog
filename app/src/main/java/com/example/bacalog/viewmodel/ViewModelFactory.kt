@@ -48,7 +48,7 @@ class ViewModelFactory(private val context: Context) : ViewModelProvider.Factory
             }
             modelClass.isAssignableFrom(ProfilViewModel::class.java) -> {
                 val profilRepository = ProfilRepository(apiService)
-                ProfilViewModel(profilRepository, tokenManager) as T
+                ProfilViewModel(profilRepository) as T
             }
             modelClass.isAssignableFrom(LaporanViewModel::class.java) -> {
                 val bacaanRepository = BacaanRepository(apiService)
