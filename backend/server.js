@@ -229,11 +229,11 @@ app.get("/api/profil", authenticateToken, async (req, res) => {
     const search = req.query.search || "";
 
     let sql =
-      "SELECT id, nama, email, bio_belajar, catatan_fokus, created_at FROM users WHERE id = ?";
+      "SELECT id, nama, email, bio_belajar, created_at FROM users WHERE id = ?";
     const params = [userId];
 
     if (search.trim() !== "") {
-      sql += " AND (nama LIKE ? OR bio_belajar LIKE ? OR catatan_fokus LIKE ?)";
+      sql += " AND (nama LIKE ? OR bio_belajar LIKE ? OR email LIKE ?)";
       const q = `%${search.trim()}%`;
       params.push(q, q, q);
     }
@@ -258,10 +258,9 @@ app.get("/api/profil", authenticateToken, async (req, res) => {
 app.put("/api/profil", authenticateToken, async (req, res) => {
   try {
     const userId = req.user.id;
-    const { nama, bio_belajar, catatan_fokus, password_lama, password_baru } =
-      req.body;
+    const { nama, bio_belajar, password_lama, password_baru } = req.body;
 
-    if (!nama || nama.trim().isBlank?.() || nama.trim() === "") {
+    if (!nama || nama.trim() === "") {
       return res
         .status(400)
         .json({ status: "error", message: "Nama lengkap tidak boleh kosong" });
@@ -287,29 +286,27 @@ app.put("/api/profil", authenticateToken, async (req, res) => {
       }
       const hashed = await bcrypt.hash(password_baru.trim(), 10);
       await dbPool.query(
-        "UPDATE users SET nama = ?, bio_belajar = ?, catatan_fokus = ?, password = ? WHERE id = ?",
+        "UPDATE users SET nama = ?, bio_belajar = ?, password = ? WHERE id = ?",
         [
           nama.trim(),
           bio_belajar ? bio_belajar.trim() : null,
-          catatan_fokus ? catatan_fokus.trim() : null,
           hashed,
           userId,
         ],
       );
     } else {
       await dbPool.query(
-        "UPDATE users SET nama = ?, bio_belajar = ?, catatan_fokus = ? WHERE id = ?",
+        "UPDATE users SET nama = ?, bio_belajar = ? WHERE id = ?",
         [
           nama.trim(),
           bio_belajar ? bio_belajar.trim() : null,
-          catatan_fokus ? catatan_fokus.trim() : null,
           userId,
         ],
       );
     }
 
     const [updated] = await dbPool.query(
-      "SELECT id, nama, email, bio_belajar, catatan_fokus FROM users WHERE id = ?",
+      "SELECT id, nama, email, bio_belajar, created_at FROM users WHERE id = ?",
       [userId],
     );
     res.json({
@@ -883,10 +880,10 @@ app.post("/api/progres", authenticateToken, async (req, res) => {
     }
 
     const hal = parseInt(halaman_dicapai, 10);
-    if (isNaN(hal) || hal < 0) {
+    if (isNaN(hal) || hal <= 0) {
       return res.status(400).json({
         status: "error",
-        message: "Halaman dicapai harus berupa angka positif atau nol",
+        message: "Halaman dicapai harus berupa angka lebih dari 0",
       });
     }
 
@@ -970,14 +967,25 @@ app.put("/api/progres/:id", authenticateToken, async (req, res) => {
     }
 
     const hal = parseInt(halaman_dicapai, 10);
-    if (isNaN(hal) || hal < 0) {
+    if (isNaN(hal) || hal <= 0) {
       return res.status(400).json({
         status: "error",
-        message: "Halaman dicapai harus berupa angka positif atau nol",
+        message: "Halaman dicapai harus berupa angka lebih dari 0",
       });
     }
 
     const target = target_harian ? parseInt(target_harian, 10) : hal;
+
+    const [bacaanCheck] = await dbPool.query(
+      "SELECT id, total_halaman, status_baca FROM bahan_bacaan WHERE id = ? AND user_id = ?",
+      [bacaan_id, userId],
+    );
+    if (bacaanCheck.length === 0) {
+      return res.status(400).json({
+        status: "error",
+        message: "Bahan bacaan yang dipilih tidak valid",
+      });
+    }
 
     const [result] = await dbPool.query(
       "UPDATE catatan_progres SET bacaan_id = ?, tanggal_baca = ?, halaman_dicapai = ?, ringkasan_materi = ?, target_harian = ? WHERE id = ? AND user_id = ?",
@@ -997,6 +1005,22 @@ app.put("/api/progres/:id", authenticateToken, async (req, res) => {
         status: "error",
         message: "Catatan progres tidak ditemukan atau bukan milik Anda",
       });
+    }
+
+    const bacaanItem = bacaanCheck[0];
+    if (
+      hal >= bacaanItem.total_halaman &&
+      bacaanItem.status_baca !== "Selesai"
+    ) {
+      await dbPool.query(
+        'UPDATE bahan_bacaan SET status_baca = "Selesai" WHERE id = ?',
+        [bacaan_id],
+      );
+    } else if (hal > 0 && bacaanItem.status_baca === "Belum Dibaca") {
+      await dbPool.query(
+        'UPDATE bahan_bacaan SET status_baca = "Sedang Dibaca" WHERE id = ?',
+        [bacaan_id],
+      );
     }
 
     res.json({
@@ -1226,9 +1250,6 @@ app.delete("/api/target/:id", authenticateToken, async (req, res) => {
 // Inisialisasi Skema Tabel Otomatis saat Startup (6 Entitas Relasional)
 async function initDatabaseSchema() {
   try {
-    await dbPool.query(
-      "ALTER TABLE users ADD COLUMN IF NOT EXISTS catatan_fokus TEXT NULL AFTER bio_belajar",
-    );
     await dbPool.query(`
             CREATE TABLE IF NOT EXISTS target_baca (
                 id INT AUTO_INCREMENT PRIMARY KEY,
