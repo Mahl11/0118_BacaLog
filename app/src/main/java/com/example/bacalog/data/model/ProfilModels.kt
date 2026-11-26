@@ -5,7 +5,6 @@ data class UserProfilDto(
     val nama: String,
     val email: String,
     val bio_belajar: String?,
-    val catatan_fokus: String?,
     val created_at: String?
 )
 
@@ -17,7 +16,6 @@ data class ProfilResponse(
 data class UpdateProfilRequest(
     val nama: String,
     val bio_belajar: String?,
-    val catatan_fokus: String?,
     val password_lama: String? = null,
     val password_baru: String? = null
 )

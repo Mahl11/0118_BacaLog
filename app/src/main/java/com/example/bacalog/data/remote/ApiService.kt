@@ -15,7 +15,6 @@ import com.example.bacalog.data.model.RefreshTokenResponse
 import com.example.bacalog.data.model.RegisterRequest
 import com.example.bacalog.data.model.TargetListResponse
 import com.example.bacalog.data.model.TargetRequest
-import com.example.bacalog.data.model.UserDto
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -37,9 +36,6 @@ interface ApiService {
 
     @POST("auth/logout")
     suspend fun logout(): Response<GenericResponse>
-
-    @GET("profil")
-    suspend fun getProfile(): Response<UserDto>
 
     @GET("dashboard/statistik")
     suspend fun getDashboardStatistik(): Response<DashboardStatistikResponse>

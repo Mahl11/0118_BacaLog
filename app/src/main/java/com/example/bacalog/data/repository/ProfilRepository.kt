@@ -26,7 +26,6 @@ class ProfilRepository(private val apiService: ApiService) {
     suspend fun updateProfil(
         nama: String,
         bioBelajar: String?,
-        catatanFokus: String?,
         passwordLama: String? = null,
         passwordBaru: String? = null
     ): Result<String> {
@@ -34,7 +33,6 @@ class ProfilRepository(private val apiService: ApiService) {
             val req = UpdateProfilRequest(
                 nama = nama,
                 bio_belajar = bioBelajar,
-                catatan_fokus = catatanFokus,
                 password_lama = passwordLama,
                 password_baru = passwordBaru
             )
