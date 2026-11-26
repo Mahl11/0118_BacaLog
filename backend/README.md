@@ -21,7 +21,7 @@ Layanan backend RESTful API untuk aplikasi Android **BacaLog (0118_BacaLog)** ya
 1. **Import Database:**
    - Buka phpMyAdmin (`http://localhost/phpmyadmin`) atau terminal MySQL.
    - Import atau jalankan query dari file `backend/database.sql`.
-   - Basis data `bacalog_db` beserta 4 tabel utama (`users`, `kategori_topik`, `bahan_bacaan`, `catatan_progres`) dan data seeder awal akan otomatis dibuat.
+   - Basis data `bacalog_db` beserta seluruh **6 tabel relasional** (`users`, `kategori_topik`, `bahan_bacaan`, `catatan_progres`, `target_baca`, dan `catatan_fokus`) serta data seeder awal akan otomatis dibuat. Skema juga diverifikasi ulang secara otomatis saat server backend dijalankan.
 
 2. **Install Dependensi:**
    ```bash
@@ -33,6 +33,7 @@ Layanan backend RESTful API untuk aplikasi Android **BacaLog (0118_BacaLog)** ya
    ```bash
    npm start
    ```
+   Atau di Windows, jalankan langsung skrip `backend/JALANKAN_BACKEND.bat` (klik dua kali) untuk membuka server backend dengan cepat saat demo aplikasi.
    Server akan aktif di:
    - Akses Browser / Postman: `http://localhost:5000/api/`
    - Akses dari Android Emulator: `http://10.0.2.2:5000/api/`
