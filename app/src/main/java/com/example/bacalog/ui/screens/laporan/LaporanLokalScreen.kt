@@ -71,7 +71,6 @@ import com.example.bacalog.ui.components.BacaLogBottomBar
 import com.example.bacalog.ui.navigation.Screen
 import com.example.bacalog.ui.theme.IndigoContainer
 import com.example.bacalog.ui.theme.OnIndigoContainer
-import com.example.bacalog.ui.theme.SlateCard
 import com.example.bacalog.viewmodel.LaporanViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -146,7 +145,7 @@ fun LaporanLokalScreen(
             // 1. Banner Card: Informasi Internal Storage & Tombol Ekspor
             item {
                 Card(
-                    colors = CardDefaults.cardColors(containerColor = IndigoContainer),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
                     shape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius)),
                     modifier = Modifier.fillMaxWidth()
                 ) {
@@ -177,10 +176,10 @@ fun LaporanLokalScreen(
                                     text = stringResource(R.string.laporan_banner_judul),
                                     style = MaterialTheme.typography.titleMedium,
                                     fontWeight = FontWeight.Bold,
-                                    color = OnIndigoContainer
+                                    color = MaterialTheme.colorScheme.onPrimaryContainer
                                 )
                                 Text(
-                                    text = "Pedoman PAM Poin 9 (openFileOutput)",
+                                    text = stringResource(R.string.laporan_banner_subjudul),
                                     style = MaterialTheme.typography.labelSmall,
                                     color = MaterialTheme.colorScheme.primary,
                                     fontWeight = FontWeight.SemiBold
@@ -191,7 +190,7 @@ fun LaporanLokalScreen(
                         Text(
                             text = stringResource(R.string.laporan_banner_desc),
                             style = MaterialTheme.typography.bodySmall,
-                            color = OnIndigoContainer
+                            color = MaterialTheme.colorScheme.onPrimaryContainer
                         )
 
                         Button(
@@ -244,7 +243,7 @@ fun LaporanLokalScreen(
                     )
                     Surface(
                         shape = RoundedCornerShape(12.dp),
-                        color = SlateCard
+                        color = MaterialTheme.colorScheme.surfaceVariant
                     ) {
                         Text(
                             text = "${fileList.size} Berkas",
@@ -261,7 +260,7 @@ fun LaporanLokalScreen(
             if (fileList.isEmpty()) {
                 item {
                     Card(
-                        colors = CardDefaults.cardColors(containerColor = SlateCard),
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
                         shape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius)),
                         modifier = Modifier.fillMaxWidth()
                     ) {
@@ -455,7 +454,7 @@ fun LaporanPreviewDialog(
 
                     // Kotak Teks Monospace Isi Laporan
                     Surface(
-                        color = SlateCard,
+                        color = MaterialTheme.colorScheme.surfaceVariant,
                         shape = RoundedCornerShape(8.dp),
                         modifier = Modifier
                             .fillMaxWidth()

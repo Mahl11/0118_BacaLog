@@ -47,7 +47,6 @@ import com.example.bacalog.ui.components.StatistikCard
 import com.example.bacalog.ui.navigation.Screen
 import com.example.bacalog.ui.theme.IndigoContainer
 import com.example.bacalog.ui.theme.IndigoTertiary
-import com.example.bacalog.ui.theme.SlateCard
 import com.example.bacalog.ui.theme.SuccessGreen
 import com.example.bacalog.ui.theme.WarningAmber
 import com.example.bacalog.viewmodel.AuthViewModel
@@ -175,7 +174,7 @@ fun HomeScreen(
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius)),
-                colors = CardDefaults.cardColors(containerColor = SlateCard),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
                 elevation = CardDefaults.cardElevation(defaultElevation = dimensionResource(R.dimen.card_elevation))
             ) {
                 Row(

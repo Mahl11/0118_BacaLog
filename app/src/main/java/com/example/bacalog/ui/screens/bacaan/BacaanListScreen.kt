@@ -78,7 +78,6 @@ import com.example.bacalog.data.model.KategoriDto
 import com.example.bacalog.ui.components.BacaLogBottomBar
 import com.example.bacalog.ui.navigation.Screen
 import com.example.bacalog.ui.theme.IndigoContainer
-import com.example.bacalog.ui.theme.SlateCard
 import com.example.bacalog.ui.theme.SuccessGreen
 import com.example.bacalog.ui.theme.WarningAmber
 import com.example.bacalog.viewmodel.BacaanUiState
@@ -420,7 +419,7 @@ private fun BacaanItemCard(
                 val (statusBg, statusFg) = when (bacaan.statusBaca) {
                     "Selesai" -> SuccessGreen.copy(alpha = 0.15f) to SuccessGreen
                     "Sedang Dibaca" -> WarningAmber.copy(alpha = 0.15f) to WarningAmber
-                    else -> SlateCard to MaterialTheme.colorScheme.onSurfaceVariant
+                    else -> MaterialTheme.colorScheme.surfaceVariant to MaterialTheme.colorScheme.onSurfaceVariant
                 }
 
                 Surface(

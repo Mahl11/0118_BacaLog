@@ -75,7 +75,6 @@ import com.example.bacalog.data.model.ProgresDto
 import com.example.bacalog.ui.components.BacaLogBottomBar
 import com.example.bacalog.ui.navigation.Screen
 import com.example.bacalog.ui.theme.IndigoContainer
-import com.example.bacalog.ui.theme.SlateCard
 import com.example.bacalog.ui.theme.SuccessGreen
 import com.example.bacalog.ui.theme.WarningAmber
 import com.example.bacalog.viewmodel.ProgresUiState
@@ -498,7 +497,7 @@ fun ProgresItemCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(
-                        color = SlateCard,
+                        color = MaterialTheme.colorScheme.surfaceVariant,
                         shape = RoundedCornerShape(8.dp)
                     )
                     .padding(dimensionResource(R.dimen.padding_small))

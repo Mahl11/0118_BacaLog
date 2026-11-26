@@ -81,7 +81,6 @@ import com.example.bacalog.ui.components.BacaLogBottomBar
 import com.example.bacalog.ui.navigation.Screen
 import com.example.bacalog.ui.theme.IndigoContainer
 import com.example.bacalog.ui.theme.OnIndigoContainer
-import com.example.bacalog.ui.theme.SlateCard
 import com.example.bacalog.ui.theme.SuccessGreen
 import com.example.bacalog.viewmodel.FokusUiState
 import com.example.bacalog.viewmodel.ProfilUiState
@@ -315,7 +314,7 @@ fun ProfilScreen(
                     item {
                         val isSearching = searchQuery.trim().isNotEmpty()
                         Card(
-                            colors = CardDefaults.cardColors(containerColor = SlateCard),
+                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
                             shape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius)),
                             modifier = Modifier.fillMaxWidth()
                         ) {
@@ -567,7 +566,7 @@ fun ProfilHeaderCard(
             // Bio & Motivasi Belajar
             Surface(
                 shape = RoundedCornerShape(dimensionResource(R.dimen.padding_small)),
-                color = SlateCard,
+                color = MaterialTheme.colorScheme.surfaceVariant,
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(

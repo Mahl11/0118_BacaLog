@@ -8,12 +8,19 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
     primary = IndigoSecondary,
     secondary = IndigoTertiary,
-    tertiary = IndigoContainer
+    tertiary = IndigoContainer,
+    primaryContainer = IndigoPrimary,
+    onPrimaryContainer = IndigoContainer,
+    background = Color(0xFF0F172A),
+    surface = Color(0xFF1E293B),
+    surfaceVariant = Color(0xFF334155),
+    onSurfaceVariant = Color(0xFFCBD5E1)
 )
 
 private val LightColorScheme = lightColorScheme(
@@ -22,6 +29,8 @@ private val LightColorScheme = lightColorScheme(
     tertiary = IndigoTertiary,
     background = SlateBackground,
     surface = SlateSurface,
+    surfaceVariant = SlateCard,
+    onSurfaceVariant = SlateTextSecondary,
     primaryContainer = IndigoContainer,
     onPrimaryContainer = OnIndigoContainer
 )

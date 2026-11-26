@@ -116,7 +116,7 @@
     <string name="bacaan_tambah_judul">Tambah Bahan Bacaan</string>
     <string name="bacaan_edit_judul">Ubah Bahan Bacaan</string>
     <string name="bacaan_judul_label">Judul Bahan Bacaan</string>
-    <string name="bacaan_judul_placeholder">Contoh: Slide Pertemuan 9 - Room DB</string>
+    <string name="bacaan_judul_placeholder">Contoh: Slide Pertemuan 10 - Compose Navigation</string>
     <string name="bacaan_penulis_label">Penulis / Sumber Belajar</string>
     <string name="bacaan_penulis_placeholder">Contoh: Dosen PAM UMY</string>
     <string name="bacaan_halaman_label">Total Halaman / Slide</string>
@@ -240,6 +240,7 @@
 
     <!-- Modul Laporan Penyimpanan Lokal (Poin 9 Pedoman PAM) -->
     <string name="laporan_banner_judul">Penyimpanan Berkas Internal</string>
+    <string name="laporan_banner_subjudul">Penyimpanan Privat Offline (openFileOutput)</string>
     <string name="laporan_banner_desc">Ekspor rekapitulasi data bacaan, target capaian, dan log progres belajar ke berkas .txt di memori internal (filesDir). Berkas dapat dibaca offline kapan saja.</string>
     <string name="laporan_btn_ekspor">Ekspor Laporan Baru (.txt)</string>
     <string name="laporan_section_tersimpan">Berkas Laporan Tersimpan</string>
