@@ -69,8 +69,6 @@ import com.example.bacalog.R
 import com.example.bacalog.data.local.FileLaporanDto
 import com.example.bacalog.ui.components.BacaLogBottomBar
 import com.example.bacalog.ui.navigation.Screen
-import com.example.bacalog.ui.theme.IndigoContainer
-import com.example.bacalog.ui.theme.OnIndigoContainer
 import com.example.bacalog.viewmodel.LaporanViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -363,14 +361,14 @@ fun FileLaporanCard(
                 modifier = Modifier
                     .size(44.dp)
                     .clip(RoundedCornerShape(8.dp))
-                    .background(IndigoContainer),
+                    .background(MaterialTheme.colorScheme.primaryContainer),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = ".TXT",
                     style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.Bold,
-                    color = OnIndigoContainer
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             }
 

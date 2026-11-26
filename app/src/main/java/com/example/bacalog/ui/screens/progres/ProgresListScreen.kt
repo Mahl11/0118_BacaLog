@@ -74,7 +74,6 @@ import com.example.bacalog.data.model.BacaanDto
 import com.example.bacalog.data.model.ProgresDto
 import com.example.bacalog.ui.components.BacaLogBottomBar
 import com.example.bacalog.ui.navigation.Screen
-import com.example.bacalog.ui.theme.IndigoContainer
 import com.example.bacalog.ui.theme.SuccessGreen
 import com.example.bacalog.ui.theme.WarningAmber
 import com.example.bacalog.viewmodel.ProgresUiState
@@ -408,13 +407,13 @@ fun ProgresItemCard(
                 if (progres.namaKategori.isNotBlank()) {
                     Surface(
                         shape = RoundedCornerShape(50),
-                        color = IndigoContainer
+                        color = MaterialTheme.colorScheme.primaryContainer
                     ) {
                         Text(
                             text = progres.namaKategori,
                             style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.primary,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis

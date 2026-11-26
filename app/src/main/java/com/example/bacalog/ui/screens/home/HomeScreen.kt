@@ -45,7 +45,6 @@ import com.example.bacalog.ui.components.BacaLogTopBar
 import com.example.bacalog.ui.components.MenuCard
 import com.example.bacalog.ui.components.StatistikCard
 import com.example.bacalog.ui.navigation.Screen
-import com.example.bacalog.ui.theme.IndigoContainer
 import com.example.bacalog.ui.theme.IndigoTertiary
 import com.example.bacalog.ui.theme.SuccessGreen
 import com.example.bacalog.ui.theme.WarningAmber
@@ -228,7 +227,7 @@ fun HomeScreen(
                 deskripsi = stringResource(R.string.menu_bacaan_desc),
                 ikon = Icons.AutoMirrored.Filled.MenuBook,
                 warnaIkon = IndigoTertiary,
-                warnaLatarIkon = IndigoContainer,
+                warnaLatarIkon = MaterialTheme.colorScheme.primaryContainer,
                 onClick = { onNavigate(Screen.Bacaan.route) }
             )
 

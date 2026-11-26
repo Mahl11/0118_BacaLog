@@ -78,7 +78,6 @@ import androidx.compose.ui.unit.dp
 import com.example.bacalog.R
 import com.example.bacalog.data.model.BacaanDto
 import com.example.bacalog.data.model.TargetDto
-import com.example.bacalog.ui.theme.IndigoContainer
 import com.example.bacalog.ui.theme.SuccessGreen
 import com.example.bacalog.ui.theme.WarningAmber
 import androidx.compose.material.icons.filled.Description
@@ -425,13 +424,13 @@ fun TargetItemCard(
             ) {
                 Surface(
                     shape = RoundedCornerShape(dimensionResource(R.dimen.padding_small)),
-                    color = IndigoContainer
+                    color = MaterialTheme.colorScheme.primaryContainer
                 ) {
                     Text(
                         text = target.namaKategori ?: "Kategori Belajar",
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.SemiBold,
-                        color = MaterialTheme.colorScheme.primary,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis

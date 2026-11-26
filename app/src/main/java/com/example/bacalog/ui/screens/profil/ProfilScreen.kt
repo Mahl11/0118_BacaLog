@@ -79,8 +79,6 @@ import com.example.bacalog.data.model.FokusDto
 import com.example.bacalog.data.model.UserProfilDto
 import com.example.bacalog.ui.components.BacaLogBottomBar
 import com.example.bacalog.ui.navigation.Screen
-import com.example.bacalog.ui.theme.IndigoContainer
-import com.example.bacalog.ui.theme.OnIndigoContainer
 import com.example.bacalog.ui.theme.SuccessGreen
 import com.example.bacalog.viewmodel.FokusUiState
 import com.example.bacalog.viewmodel.ProfilUiState
@@ -549,13 +547,13 @@ fun ProfilHeaderCard(
                     )
                     Surface(
                         shape = RoundedCornerShape(12.dp),
-                        color = IndigoContainer,
+                        color = MaterialTheme.colorScheme.primaryContainer,
                         modifier = Modifier.padding(top = 4.dp)
                     ) {
                         Text(
                             text = stringResource(R.string.profil_badge_peran),
                             style = MaterialTheme.typography.labelSmall,
-                            color = OnIndigoContainer,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp)
                         )
@@ -615,8 +613,8 @@ fun FokusCard(
     modifier: Modifier = Modifier
 ) {
     val isSelesai = fokus.status_fokus.equals("Selesai", ignoreCase = true)
-    val statusBg = if (isSelesai) SuccessGreen.copy(alpha = 0.15f) else IndigoContainer
-    val statusColor = if (isSelesai) SuccessGreen else OnIndigoContainer
+    val statusBg = if (isSelesai) SuccessGreen.copy(alpha = 0.15f) else MaterialTheme.colorScheme.primaryContainer
+    val statusColor = if (isSelesai) SuccessGreen else MaterialTheme.colorScheme.onPrimaryContainer
 
     Card(
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
