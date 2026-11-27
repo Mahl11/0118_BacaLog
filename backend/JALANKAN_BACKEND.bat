@@ -38,7 +38,7 @@ if not errorlevel 1 (
     echo.
     echo [OK] Backend API BacaLog sudah aktif di port 5000.
     echo     Tidak perlu membuka server ganda.
-    echo     (Jika ingin restart paksa, jalankan: taskkill /F /IM node.exe)
+    echo     Jika ingin restart paksa, jalankan: taskkill /F /IM node.exe
     echo.
     pause
     exit /b 0
