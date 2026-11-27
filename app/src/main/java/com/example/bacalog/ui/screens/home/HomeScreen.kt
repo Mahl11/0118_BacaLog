@@ -1,7 +1,7 @@
 package com.example.bacalog.ui.screens.home
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Assignment
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.automirrored.filled.TrendingUp
 import androidx.compose.material.icons.filled.CheckCircle
@@ -24,7 +25,6 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.SportsScore
 import androidx.compose.material.icons.filled.Timer
-import androidx.compose.material.icons.filled.Timeline
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -32,13 +32,16 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import com.example.bacalog.R
 import com.example.bacalog.ui.components.BacaLogBottomBar
 import com.example.bacalog.ui.components.BacaLogTopBar
@@ -48,29 +51,26 @@ import com.example.bacalog.ui.navigation.Screen
 import com.example.bacalog.ui.theme.IndigoTertiary
 import com.example.bacalog.ui.theme.SuccessGreen
 import com.example.bacalog.ui.theme.WarningAmber
-import com.example.bacalog.viewmodel.AuthViewModel
 import com.example.bacalog.viewmodel.HomeViewModel
 
 @Composable
 fun HomeScreen(
-    authViewModel: AuthViewModel,
     homeViewModel: HomeViewModel,
     onNavigate: (String) -> Unit,
-    onLogout: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val stat by homeViewModel.statistik.collectAsState()
+    val namaPengguna by homeViewModel.namaPengguna.collectAsState()
+    val activeTargetSummary by homeViewModel.activeTargetSummary.collectAsState()
+
+    LaunchedEffect(Unit) {
+        homeViewModel.loadStatistik()
+    }
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
-            BacaLogTopBar(
-                judul = stringResource(R.string.app_name),
-                onLogoutClick = {
-                    authViewModel.logout()
-                    onLogout()
-                }
-            )
+            BacaLogTopBar(judul = stringResource(R.string.app_name))
         },
         bottomBar = {
             BacaLogBottomBar(
@@ -85,10 +85,15 @@ fun HomeScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
                 .verticalScroll(rememberScrollState())
-                .padding(dimensionResource(R.dimen.padding_medium)),
+                .padding(
+                    start = dimensionResource(R.dimen.padding_medium),
+                    top = dimensionResource(R.dimen.padding_medium),
+                    end = dimensionResource(R.dimen.padding_medium),
+                    bottom = 88.dp
+                ),
             verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium))
         ) {
-            // 1. Banner Sambutan Pengguna
+            // 1. Banner Sambutan Pengguna Personal
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius)),
@@ -100,8 +105,13 @@ fun HomeScreen(
                         .fillMaxWidth()
                         .padding(dimensionResource(R.dimen.padding_large))
                 ) {
+                    val greeting = if (!namaPengguna.isNullOrBlank()) {
+                        stringResource(R.string.dashboard_salam_personal, namaPengguna!!)
+                    } else {
+                        stringResource(R.string.dashboard_salam_pembuka)
+                    }
                     Text(
-                        text = stringResource(R.string.dashboard_salam_pembuka),
+                        text = greeting,
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onPrimaryContainer
@@ -169,10 +179,14 @@ fun HomeScreen(
                 )
             }
 
-            // 3. Banner Target Belajar Harian
+            // 3. Banner Target Belajar Aktif (Dinamis & Clickable ke TargetListScreen)
+            val cardShape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius))
             Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius)),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(cardShape)
+                    .clickable { onNavigate(Screen.Target.route) },
+                shape = cardShape,
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
                 elevation = CardDefaults.cardElevation(defaultElevation = dimensionResource(R.dimen.card_elevation))
             ) {
@@ -196,16 +210,33 @@ fun HomeScreen(
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurface
                         )
+                        val highlighted = activeTargetSummary.highlightedTarget
+                        val targetDesc = if (highlighted != null) {
+                            stringResource(
+                                R.string.dashboard_target_banner_dinamis,
+                                activeTargetSummary.activeCount,
+                                highlighted.judulBacaan ?: stringResource(R.string.menu_bacaan_judul),
+                                highlighted.capaianTertinggi ?: 0,
+                                highlighted.targetHalaman
+                            )
+                        } else {
+                            stringResource(R.string.dashboard_target_banner_kosong)
+                        }
                         Text(
-                            text = stringResource(R.string.dashboard_target_banner_desc),
+                            text = targetDesc,
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                        contentDescription = stringResource(R.string.menu_target_judul),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                 }
             }
 
-            // 4. Menu Modul Utama (CRUDS Shortcuts)
+            // 4. Menu Modul Utama (Seluruh Fitur SRS Terjangkau dari Beranda)
             Text(
                 text = stringResource(R.string.section_menu_utama),
                 style = MaterialTheme.typography.titleMedium,
@@ -220,24 +251,6 @@ fun HomeScreen(
                 warnaIkon = MaterialTheme.colorScheme.primary,
                 warnaLatarIkon = MaterialTheme.colorScheme.primaryContainer,
                 onClick = { onNavigate(Screen.Kategori.route) }
-            )
-
-            MenuCard(
-                judul = stringResource(R.string.menu_bacaan_judul),
-                deskripsi = stringResource(R.string.menu_bacaan_desc),
-                ikon = Icons.AutoMirrored.Filled.MenuBook,
-                warnaIkon = IndigoTertiary,
-                warnaLatarIkon = MaterialTheme.colorScheme.primaryContainer,
-                onClick = { onNavigate(Screen.Bacaan.route) }
-            )
-
-            MenuCard(
-                judul = stringResource(R.string.menu_progres_judul),
-                deskripsi = stringResource(R.string.menu_progres_desc),
-                ikon = Icons.AutoMirrored.Filled.Assignment,
-                warnaIkon = WarningAmber,
-                warnaLatarIkon = MaterialTheme.colorScheme.surfaceVariant,
-                onClick = { onNavigate(Screen.Progres.route) }
             )
 
             MenuCard(
@@ -259,6 +272,24 @@ fun HomeScreen(
             )
 
             MenuCard(
+                judul = stringResource(R.string.menu_bacaan_judul),
+                deskripsi = stringResource(R.string.menu_bacaan_desc),
+                ikon = Icons.AutoMirrored.Filled.MenuBook,
+                warnaIkon = IndigoTertiary,
+                warnaLatarIkon = MaterialTheme.colorScheme.primaryContainer,
+                onClick = { onNavigate(Screen.Bacaan.route) }
+            )
+
+            MenuCard(
+                judul = stringResource(R.string.menu_progres_judul),
+                deskripsi = stringResource(R.string.menu_progres_desc),
+                ikon = Icons.AutoMirrored.Filled.Assignment,
+                warnaIkon = WarningAmber,
+                warnaLatarIkon = MaterialTheme.colorScheme.surfaceVariant,
+                onClick = { onNavigate(Screen.Progres.route) }
+            )
+
+            MenuCard(
                 judul = stringResource(R.string.menu_profil_judul),
                 deskripsi = stringResource(R.string.menu_profil_desc),
                 ikon = Icons.Default.Person,
@@ -266,8 +297,6 @@ fun HomeScreen(
                 warnaLatarIkon = MaterialTheme.colorScheme.surfaceVariant,
                 onClick = { onNavigate(Screen.Profil.route) }
             )
-
-            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_small)))
         }
     }
 }

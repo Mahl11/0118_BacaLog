@@ -55,9 +55,12 @@
     <string name="home_judul">Beranda BacaLog</string>
     <string name="home_subjudul">Ringkasan Aktivitas dan Target Belajar</string>
     <string name="dashboard_salam_pembuka">Halo, Pembelajar Mandiri!</string>
+    <string name="dashboard_salam_personal">Halo, %1$s!</string>
     <string name="dashboard_salam_sub">Pantau jejak literasi dan materi kuliahmu hari ini</string>
     <string name="dashboard_target_banner_judul">Target Belajar Aktif</string>
     <string name="dashboard_target_banner_desc">Konsistensi adalah kunci. Catat progres belajarmu hari ini!</string>
+    <string name="dashboard_target_banner_kosong">Belum ada target aktif. Ketuk untuk menambah</string>
+    <string name="dashboard_target_banner_dinamis">%1$d target berjalan · %2$s (%3$d/%4$d hal)</string>
     <string name="section_statistik_belajar">Ringkasan Belajar</string>
     <string name="section_menu_utama">Modul Fitur Utama</string>
 
@@ -74,9 +77,9 @@
     <string name="menu_bacaan_desc">Slide, modul lab dan buku kuliah</string>
     <string name="menu_progres_judul">Catatan Progres</string>
     <string name="menu_progres_desc">Log sesi baca dan intisari materi</string>
-    <string name="menu_target_judul">Target Belajar</string>
+    <string name="menu_target_judul">Target Baca Periodik</string>
     <string name="menu_target_desc">Pantau target capaian periodik</string>
-    <string name="menu_laporan_judul">Laporan Lokal (.txt)</string>
+    <string name="menu_laporan_judul">Laporan Belajar (.txt)</string>
     <string name="menu_laporan_desc">Simpan dan baca file rekap di HP</string>
     <string name="menu_profil_judul">Profil Pengguna</string>
     <string name="menu_profil_desc">Informasi akun dan fokus belajar</string>
@@ -92,6 +95,7 @@
     <string name="kategori_kosong_judul">Belum Ada Kategori Topik</string>
     <string name="kategori_kosong_desc">Tambahkan kelompok mata kuliah pertama Anda dengan menekan tombol + di bawah</string>
     <string name="kategori_tidak_ditemukan">Kategori topik tidak ditemukan</string>
+    <string name="kategori_tidak_ditemukan_desc">Tidak ada kategori topik yang cocok dengan kata kunci pencarian Anda.</string>
     <string name="kategori_tambah_judul">Tambah Kategori Topik</string>
     <string name="kategori_edit_judul">Ubah Kategori Topik</string>
     <string name="kategori_nama_label">Nama Topik / Mata Kuliah</string>
@@ -164,6 +168,7 @@
     <string name="progres_error_halaman_invalid">Halaman dicapai harus berupa angka lebih dari 0</string>
     <string name="progres_badge_halaman">Halaman %1$d</string>
     <string name="progres_target_badge">Target: %1$d</string>
+    <string name="progres_tidak_ditemukan_desc">Coba cari dengan kata kunci materi atau tanggal lain.</string>
     <string name="fab_tambah_progres">Tambah Catatan Progres</string>
     <string name="desc_hapus_progres">Hapus catatan progres</string>
     <string name="desc_ubah_progres">Ubah catatan progres</string>
@@ -173,6 +178,7 @@
     <string name="target_kosong_judul">Belum Ada Target Baca</string>
     <string name="target_kosong_desc">Tetapkan target capaian halaman dan tenggat waktu belajarmu dengan menekan tombol + di bawah</string>
     <string name="target_tidak_ditemukan">Target baca tidak ditemukan</string>
+    <string name="target_tidak_ditemukan_desc">Tidak ada target baca yang sesuai dengan kata kunci atau filter status.</string>
     <string name="target_tambah_judul">Tambah Target Baca</string>
     <string name="target_edit_judul">Ubah Target Baca</string>
     <string name="target_bacaan_label">Pilih Bahan Bacaan</string>

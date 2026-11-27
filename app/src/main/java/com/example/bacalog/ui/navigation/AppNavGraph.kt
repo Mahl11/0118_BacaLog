@@ -74,14 +74,12 @@ fun AppNavGraph(
 
         composable(Screen.Home.route) {
             HomeScreen(
-                authViewModel = authViewModel,
                 homeViewModel = homeViewModel,
                 onNavigate = { route ->
-                    navController.navigate(route)
-                },
-                onLogout = {
-                    navController.navigate(Screen.Login.route) {
-                        popUpTo(Screen.Home.route) { inclusive = true }
+                    navController.navigate(route) {
+                        popUpTo(Screen.Home.route) { saveState = true }
+                        launchSingleTop = true
+                        restoreState = true
                     }
                 }
             )
@@ -99,10 +97,13 @@ fun AppNavGraph(
             val bacaanViewModel: BacaanViewModel = viewModel(factory = factory)
             BacaanListScreen(
                 viewModel = bacaanViewModel,
-                onNavigateBack = { navController.popBackStack() },
                 onNavigate = { route ->
-                    navController.navigate(route) {
-                        launchSingleTop = true
+                    if (route != Screen.Bacaan.route) {
+                        navController.navigate(route) {
+                            popUpTo(Screen.Home.route) { saveState = true }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
                     }
                 }
             )
@@ -112,10 +113,13 @@ fun AppNavGraph(
             val progresViewModel: ProgresViewModel = viewModel(factory = factory)
             ProgresListScreen(
                 viewModel = progresViewModel,
-                onNavigateBack = { navController.popBackStack() },
                 onNavigate = { route ->
-                    navController.navigate(route) {
-                        launchSingleTop = true
+                    if (route != Screen.Progres.route) {
+                        navController.navigate(route) {
+                            popUpTo(Screen.Home.route) { saveState = true }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
                     }
                 }
             )
@@ -142,7 +146,6 @@ fun AppNavGraph(
             val profilViewModel: ProfilViewModel = viewModel(factory = factory)
             ProfilScreen(
                 viewModel = profilViewModel,
-                onNavigateBack = { navController.popBackStack() },
                 onNavigate = { route ->
                     if (route != Screen.Profil.route) {
                         navController.navigate(route) {
