@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bacalog.data.model.UserDto
 import com.example.bacalog.data.repository.AuthRepository
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -30,6 +31,7 @@ class AuthViewModel(private val authRepository: AuthRepository) : ViewModel() {
 
     fun checkSession() {
         viewModelScope.launch {
+            delay(650)
             _isUserLoggedIn.value = authRepository.isLoggedIn()
         }
     }

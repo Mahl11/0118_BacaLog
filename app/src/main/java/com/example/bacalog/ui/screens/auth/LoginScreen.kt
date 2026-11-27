@@ -1,6 +1,6 @@
 package com.example.bacalog.ui.screens.auth
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,11 +17,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.MenuBook
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
@@ -44,12 +42,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import com.example.bacalog.R
 import com.example.bacalog.viewmodel.AuthUiState
 import com.example.bacalog.viewmodel.AuthViewModel
@@ -91,23 +93,15 @@ fun LoginScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                // Header Logo & Ikon BacaLog
-                Box(
+                // Header Logo & Ikon Custom BacaLog
+                Image(
+                    painter = painterResource(id = R.drawable.logo_bacalog),
+                    contentDescription = stringResource(R.string.desc_logo_app),
+                    contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .size(dimensionResource(R.dimen.auth_header_icon_size))
-                        .background(
-                            color = MaterialTheme.colorScheme.primaryContainer,
-                            shape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius))
-                        ),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.MenuBook,
-                        contentDescription = stringResource(R.string.desc_logo_app),
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(dimensionResource(R.dimen.icon_size_large))
-                    )
-                }
+                        .clip(RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius)))
+                )
 
                 Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_medium)))
 
@@ -121,7 +115,8 @@ fun LoginScreen(
                 Text(
                     text = stringResource(R.string.app_tagline),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    textAlign = TextAlign.Center
                 )
 
                 Spacer(modifier = Modifier.height(dimensionResource(R.dimen.form_spacing_large)))
