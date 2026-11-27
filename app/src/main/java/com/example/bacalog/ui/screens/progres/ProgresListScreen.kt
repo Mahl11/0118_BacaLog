@@ -264,7 +264,7 @@ fun ProgresListScreen(
                     ) {
                         Card(
                             colors = CardDefaults.cardColors(
-                                containerColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.5f)
+                                containerColor = MaterialTheme.colorScheme.errorContainer
                             ),
                             shape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius))
                         ) {
@@ -365,7 +365,7 @@ fun ProgresListScreen(
                 }
             },
             dismissButton = {
-                OutlinedButton(onClick = { viewModel.closeDeleteDialog() }) {
+                TextButton(onClick = { viewModel.closeDeleteDialog() }) {
                     Text(text = stringResource(R.string.btn_batal))
                 }
             }
@@ -616,7 +616,7 @@ fun AddEditProgresDialog(
                     OutlinedButton(
                         onClick = { dropdownExpanded = true },
                         modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(8.dp)
+                        shape = RoundedCornerShape(dimensionResource(R.dimen.input_corner_radius))
                     ) {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -684,7 +684,7 @@ fun AddEditProgresDialog(
                     placeholder = { Text(stringResource(R.string.progres_tanggal_placeholder)) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(8.dp)
+                    shape = RoundedCornerShape(dimensionResource(R.dimen.input_corner_radius))
                 )
 
                 // Row: Halaman Dicapai & Target Harian
@@ -700,7 +700,7 @@ fun AddEditProgresDialog(
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         singleLine = true,
                         modifier = Modifier.weight(1f),
-                        shape = RoundedCornerShape(8.dp)
+                        shape = RoundedCornerShape(dimensionResource(R.dimen.input_corner_radius))
                     )
 
                     OutlinedTextField(
@@ -711,7 +711,7 @@ fun AddEditProgresDialog(
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         singleLine = true,
                         modifier = Modifier.weight(1f),
-                        shape = RoundedCornerShape(8.dp)
+                        shape = RoundedCornerShape(dimensionResource(R.dimen.input_corner_radius))
                     )
                 }
 
@@ -724,7 +724,7 @@ fun AddEditProgresDialog(
                     minLines = 3,
                     maxLines = 5,
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(8.dp)
+                    shape = RoundedCornerShape(dimensionResource(R.dimen.input_corner_radius))
                 )
             }
         },
@@ -744,7 +744,7 @@ fun AddEditProgresDialog(
             }
         },
         dismissButton = {
-            OutlinedButton(onClick = onDismiss) {
+            TextButton(onClick = onDismiss) {
                 Text(text = stringResource(R.string.btn_batal))
             }
         }

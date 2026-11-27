@@ -32,7 +32,13 @@ class AuthViewModel(private val authRepository: AuthRepository) : ViewModel() {
     fun checkSession() {
         viewModelScope.launch {
             delay(650)
-            _isUserLoggedIn.value = authRepository.isLoggedIn()
+            authRepository.accessToken.collect { token ->
+                val hasSession = !token.isNullOrBlank()
+                _isUserLoggedIn.value = hasSession
+                if (!hasSession && _uiState.value is AuthUiState.Success) {
+                    _uiState.value = AuthUiState.Idle
+                }
+            }
         }
     }
 

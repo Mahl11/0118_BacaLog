@@ -48,7 +48,6 @@ fun AppNavGraph(
                     navController.navigate(Screen.Register.route)
                 },
                 onLoginSuccess = {
-                    homeViewModel.loadStatistik()
                     navController.navigate(Screen.Home.route) {
                         popUpTo(Screen.Login.route) { inclusive = true }
                     }
@@ -64,7 +63,6 @@ fun AppNavGraph(
                     navController.popBackStack()
                 },
                 onRegisterSuccess = {
-                    homeViewModel.loadStatistik()
                     navController.navigate(Screen.Home.route) {
                         popUpTo(Screen.Login.route) { inclusive = true }
                     }
@@ -156,6 +154,7 @@ fun AppNavGraph(
                     }
                 },
                 onLogoutSuccess = {
+                    homeViewModel.reset()
                     authViewModel.logout()
                     navController.navigate(Screen.Login.route) {
                         popUpTo(0) { inclusive = true }

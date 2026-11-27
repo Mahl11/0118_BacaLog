@@ -28,6 +28,8 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.SportsScore
 import androidx.compose.material.icons.filled.Timer
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -69,6 +71,7 @@ fun HomeScreen(
     val stat by homeViewModel.statistik.collectAsState()
     val namaPengguna by homeViewModel.namaPengguna.collectAsState()
     val activeTargetSummary by homeViewModel.activeTargetSummary.collectAsState()
+    val errorMessage by homeViewModel.errorMessage.collectAsState()
 
     LaunchedEffect(Unit) {
         homeViewModel.loadStatistik()
@@ -138,6 +141,36 @@ fun HomeScreen(
                             style = MaterialTheme.typography.bodyMedium,
                             color = Color.White.copy(alpha = 0.9f)
                         )
+                    }
+                }
+            }
+
+            if (!errorMessage.isNullOrBlank()) {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius)),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer)
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(dimensionResource(R.dimen.padding_medium)),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small))
+                    ) {
+                        Text(
+                            text = errorMessage!!,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onErrorContainer,
+                            modifier = Modifier.weight(1f)
+                        )
+                        Button(
+                            onClick = { homeViewModel.loadStatistik() },
+                            shape = RoundedCornerShape(dimensionResource(R.dimen.button_corner_radius)),
+                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+                        ) {
+                            Text(text = stringResource(R.string.btn_coba_lagi))
+                        }
                     }
                 }
             }

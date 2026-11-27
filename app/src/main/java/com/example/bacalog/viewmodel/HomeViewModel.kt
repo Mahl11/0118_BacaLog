@@ -30,12 +30,12 @@ class HomeViewModel(private val apiService: ApiService) : ViewModel() {
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
-    init {
-        loadStatistik()
-    }
+    private val _errorMessage = MutableStateFlow<String?>(null)
+    val errorMessage: StateFlow<String?> = _errorMessage.asStateFlow()
 
     fun loadStatistik() {
         _isLoading.value = true
+        _errorMessage.value = null
         viewModelScope.launch {
             try {
                 val statDeferred = async { runCatching { apiService.getDashboardStatistik() }.getOrNull() }
@@ -51,6 +51,8 @@ class HomeViewModel(private val apiService: ApiService) : ViewModel() {
                         selesaiDibaca = body.selesaiDibaca,
                         totalHalaman = body.totalHalaman
                     )
+                } else {
+                    _errorMessage.value = "Gagal memuat ringkasan belajar. Periksa koneksi server Anda."
                 }
 
                 val profilRes = profilDeferred.await()
@@ -73,10 +75,18 @@ class HomeViewModel(private val apiService: ApiService) : ViewModel() {
                     )
                 }
             } catch (e: Exception) {
-                // Fallback graceful
+                _errorMessage.value = "Gagal memuat ringkasan belajar. Periksa koneksi server Anda."
             } finally {
                 _isLoading.value = false
             }
         }
+    }
+
+    fun reset() {
+        _statistik.value = DashboardStatistikDto()
+        _namaPengguna.value = null
+        _activeTargetSummary.value = ActiveTargetSummary()
+        _errorMessage.value = null
+        _isLoading.value = false
     }
 }

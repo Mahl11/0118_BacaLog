@@ -157,7 +157,8 @@ fun ProfilScreen(
             FloatingActionButton(
                 onClick = { viewModel.openAddFokusDialog() },
                 containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary
+                contentColor = MaterialTheme.colorScheme.onPrimary,
+                shape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius))
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
@@ -928,6 +929,7 @@ fun AddEditFokusDialog(
                     label = { Text(stringResource(R.string.fokus_materi_label)) },
                     placeholder = { Text(stringResource(R.string.fokus_materi_placeholder)) },
                     singleLine = true,
+                    shape = RoundedCornerShape(dimensionResource(R.dimen.input_corner_radius)),
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -937,6 +939,7 @@ fun AddEditFokusDialog(
                     label = { Text(stringResource(R.string.fokus_keterangan_label)) },
                     placeholder = { Text(stringResource(R.string.fokus_keterangan_placeholder)) },
                     maxLines = 3,
+                    shape = RoundedCornerShape(dimensionResource(R.dimen.input_corner_radius)),
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -946,6 +949,7 @@ fun AddEditFokusDialog(
                     label = { Text(stringResource(R.string.fokus_target_label)) },
                     placeholder = { Text(stringResource(R.string.fokus_target_placeholder)) },
                     singleLine = true,
+                    shape = RoundedCornerShape(dimensionResource(R.dimen.input_corner_radius)),
                     modifier = Modifier.fillMaxWidth()
                 )
 

@@ -154,7 +154,8 @@ fun TargetListScreen(
             FloatingActionButton(
                 onClick = { viewModel.openAddDialog() },
                 containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary
+                contentColor = MaterialTheme.colorScheme.onPrimary,
+                shape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius))
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
@@ -311,26 +312,38 @@ fun TargetListScreen(
                     }
 
                     is TargetUiState.Error -> {
-                        Column(
+                        Box(
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .align(Alignment.Center)
-                                .padding(dimensionResource(R.dimen.padding_large)),
-                            horizontalAlignment = Alignment.CenterHorizontally
+                                .fillMaxSize()
+                                .padding(dimensionResource(R.dimen.padding_medium)),
+                            contentAlignment = Alignment.Center
                         ) {
-                            Text(
-                                text = state.message,
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.error,
-                                textAlign = TextAlign.Center
-                            )
-                            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_medium)))
-                            Button(
-                                onClick = { viewModel.loadTarget() },
-                                shape = RoundedCornerShape(dimensionResource(R.dimen.button_corner_radius)),
-                                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
+                            Card(
+                                colors = CardDefaults.cardColors(
+                                    containerColor = MaterialTheme.colorScheme.errorContainer
+                                ),
+                                shape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius)),
+                                modifier = Modifier.fillMaxWidth()
                             ) {
-                                Text(text = stringResource(R.string.btn_coba_lagi))
+                                Column(
+                                    modifier = Modifier.padding(dimensionResource(R.dimen.padding_large)),
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small))
+                                ) {
+                                    Text(
+                                        text = state.message,
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        color = MaterialTheme.colorScheme.onErrorContainer,
+                                        textAlign = TextAlign.Center
+                                    )
+                                    Button(
+                                        onClick = { viewModel.loadTarget() },
+                                        shape = RoundedCornerShape(dimensionResource(R.dimen.button_corner_radius)),
+                                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+                                    ) {
+                                        Text(text = stringResource(R.string.btn_coba_lagi))
+                                    }
+                                }
                             }
                         }
                     }
@@ -398,7 +411,7 @@ fun TargetListScreen(
                 }
             },
             dismissButton = {
-                OutlinedButton(onClick = { viewModel.dismissDeleteDialog() }) {
+                TextButton(onClick = { viewModel.dismissDeleteDialog() }) {
                     Text(text = stringResource(R.string.btn_batal))
                 }
             }
@@ -653,7 +666,7 @@ fun TargetFormDialog(
                     OutlinedButton(
                         onClick = { isBacaanDropdownExpanded = true },
                         modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius))
+                        shape = RoundedCornerShape(dimensionResource(R.dimen.input_corner_radius))
                     ) {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -721,7 +734,7 @@ fun TargetFormDialog(
                     placeholder = { Text(text = stringResource(R.string.target_halaman_placeholder)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius)),
+                    shape = RoundedCornerShape(dimensionResource(R.dimen.input_corner_radius)),
                     singleLine = true
                 )
 
@@ -735,7 +748,7 @@ fun TargetFormDialog(
                     label = { Text(text = stringResource(R.string.target_deadline_label)) },
                     placeholder = { Text(text = stringResource(R.string.target_deadline_placeholder)) },
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius)),
+                    shape = RoundedCornerShape(dimensionResource(R.dimen.input_corner_radius)),
                     singleLine = true
                 )
 
@@ -749,7 +762,7 @@ fun TargetFormDialog(
                     OutlinedButton(
                         onClick = { isStatusDropdownExpanded = true },
                         modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius))
+                        shape = RoundedCornerShape(dimensionResource(R.dimen.input_corner_radius))
                     ) {
                         Row(
                             modifier = Modifier.fillMaxWidth(),

@@ -47,7 +47,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -375,7 +374,7 @@ fun BacaanListScreen(
                 }
             },
             dismissButton = {
-                OutlinedButton(onClick = { viewModel.closeDeleteDialog() }) {
+                TextButton(onClick = { viewModel.closeDeleteDialog() }) {
                     Text(stringResource(R.string.btn_batal))
                 }
             }
