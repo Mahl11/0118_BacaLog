@@ -1,7 +1,7 @@
 package com.example.bacalog.ui.screens.profil
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,12 +15,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CalendarToday
@@ -40,6 +39,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -88,7 +88,6 @@ import com.example.bacalog.viewmodel.ProfilViewModel
 @Composable
 fun ProfilScreen(
     viewModel: ProfilViewModel,
-    onNavigateBack: () -> Unit,
     onNavigate: (String) -> Unit,
     onLogoutSuccess: () -> Unit,
     modifier: Modifier = Modifier
@@ -132,14 +131,6 @@ fun ProfilScreen(
                         fontWeight = FontWeight.Bold
                     )
                 },
-                navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.btn_kembali)
-                        )
-                    }
-                },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.surface,
                     titleContentColor = MaterialTheme.colorScheme.primary
@@ -170,7 +161,12 @@ fun ProfilScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding),
-            contentPadding = PaddingValues(dimensionResource(R.dimen.padding_large)),
+            contentPadding = PaddingValues(
+                start = dimensionResource(R.dimen.padding_large),
+                top = dimensionResource(R.dimen.padding_large),
+                end = dimensionResource(R.dimen.padding_large),
+                bottom = 88.dp
+            ),
             verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_large))
         ) {
             // 1. Kartu Informasi Profil Pengguna
@@ -189,7 +185,8 @@ fun ProfilScreen(
                     is ProfilUiState.Success -> {
                         ProfilHeaderCard(
                             user = state.profil,
-                            onEditClick = { viewModel.openEditProfilDialog() }
+                            onEditClick = { viewModel.openEditProfilDialog() },
+                            onLogoutClick = { viewModel.openLogoutDialog() }
                         )
                     }
                     is ProfilUiState.Error -> {
@@ -278,17 +275,20 @@ fun ProfilScreen(
                     "Selesai" to stringResource(R.string.fokus_status_selesai)
                 )
 
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .horizontalScroll(rememberScrollState()),
-                    horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small))
+                LazyRow(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    filterOptions.forEach { (key, label) ->
+                    items(filterOptions) { (key, label) ->
                         FilterChip(
                             selected = selectedStatusFilter == key,
                             onClick = { viewModel.onStatusFilterSelected(key) },
-                            label = { Text(label) }
+                            label = { Text(label) },
+                            colors = FilterChipDefaults.filterChipColors(
+                                selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                                selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                selectedLeadingIconColor = MaterialTheme.colorScheme.onPrimaryContainer
+                            )
                         )
                     }
                 }
@@ -310,7 +310,7 @@ fun ProfilScreen(
                 }
                 is FokusUiState.Empty -> {
                     item {
-                        val isSearching = searchQuery.trim().isNotEmpty()
+                        val isSearchingOrFiltering = searchQuery.trim().isNotEmpty() || selectedStatusFilter != "Semua"
                         Card(
                             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
                             shape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius)),
@@ -324,19 +324,19 @@ fun ProfilScreen(
                                 verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small))
                             ) {
                                 Icon(
-                                    imageVector = if (isSearching) Icons.Default.Search else Icons.Default.Lightbulb,
+                                    imageVector = if (isSearchingOrFiltering) Icons.Default.Search else Icons.Default.Lightbulb,
                                     contentDescription = null,
                                     tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
                                     modifier = Modifier.size(56.dp)
                                 )
                                 Text(
-                                    text = if (isSearching) stringResource(R.string.fokus_tidak_ditemukan) else stringResource(R.string.fokus_kosong_judul),
+                                    text = if (isSearchingOrFiltering) stringResource(R.string.fokus_tidak_ditemukan) else stringResource(R.string.fokus_kosong_judul),
                                     style = MaterialTheme.typography.titleMedium,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.onSurface
                                 )
                                 Text(
-                                    text = if (isSearching) stringResource(R.string.fokus_tidak_ditemukan_desc) else stringResource(R.string.fokus_kosong_desc),
+                                    text = if (isSearchingOrFiltering) stringResource(R.string.fokus_tidak_ditemukan_desc) else stringResource(R.string.fokus_kosong_desc),
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     textAlign = TextAlign.Center
@@ -386,31 +386,6 @@ fun ProfilScreen(
                         }
                     }
                 }
-            }
-
-            // 6. Tombol Logout di Bagian Paling Bawah
-            item {
-                Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_medium)))
-                OutlinedButton(
-                    onClick = { viewModel.openLogoutDialog() },
-                    colors = ButtonDefaults.outlinedButtonColors(
-                        contentColor = MaterialTheme.colorScheme.error
-                    ),
-                    shape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius)),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ExitToApp,
-                        contentDescription = null,
-                        modifier = Modifier.size(20.dp)
-                    )
-                    Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_small)))
-                    Text(
-                        text = stringResource(R.string.btn_keluar_akun),
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-                Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_large)))
             }
         }
     }
@@ -492,6 +467,7 @@ fun ProfilScreen(
 fun ProfilHeaderCard(
     user: UserProfilDto,
     onEditClick: () -> Unit,
+    onLogoutClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -586,7 +562,7 @@ fun ProfilHeaderCard(
                 }
             }
 
-            // Tombol Ubah Profil
+            // Tombol Ubah Profil & Tombol Keluar (Logout)
             OutlinedButton(
                 onClick = onEditClick,
                 shape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius)),
@@ -599,6 +575,27 @@ fun ProfilHeaderCard(
                 )
                 Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_small)))
                 Text(stringResource(R.string.profil_btn_edit))
+            }
+
+            OutlinedButton(
+                onClick = onLogoutClick,
+                colors = ButtonDefaults.outlinedButtonColors(
+                    contentColor = MaterialTheme.colorScheme.error
+                ),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.error.copy(alpha = 0.6f)),
+                shape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius)),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ExitToApp,
+                    contentDescription = null,
+                    modifier = Modifier.size(18.dp)
+                )
+                Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_small)))
+                Text(
+                    text = stringResource(R.string.btn_keluar_akun),
+                    fontWeight = FontWeight.SemiBold
+                )
             }
         }
     }
@@ -889,7 +886,12 @@ fun AddEditFokusDialog(
                         FilterChip(
                             selected = statusFokus == st,
                             onClick = { statusFokus = st },
-                            label = { Text(st) }
+                            label = { Text(st) },
+                            colors = FilterChipDefaults.filterChipColors(
+                                selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                                selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                selectedLeadingIconColor = MaterialTheme.colorScheme.onPrimaryContainer
+                            )
                         )
                     }
                 }

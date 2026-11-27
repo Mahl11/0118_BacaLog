@@ -151,9 +151,15 @@ class ProfilViewModel(
             _dialogError.value = "Nama lengkap tidak boleh kosong"
             return
         }
-        if (!passwordBaru.isNullOrBlank() && passwordBaru.length < 6) {
-            _dialogError.value = "Kata sandi baru minimal 6 karakter"
-            return
+        if (!passwordBaru.isNullOrBlank()) {
+            if (passwordLama.isNullOrBlank()) {
+                _dialogError.value = "Kata sandi lama wajib diisi untuk mengganti kata sandi"
+                return
+            }
+            if (passwordBaru.trim().length < 6) {
+                _dialogError.value = "Kata sandi baru minimal 6 karakter"
+                return
+            }
         }
 
         viewModelScope.launch {
