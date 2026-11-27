@@ -33,7 +33,7 @@ Layanan backend RESTful API untuk aplikasi Android **BacaLog (0118_BacaLog)** ya
    ```bash
    npm start
    ```
-   Atau di Windows, jalankan langsung skrip `backend/JALANKAN_BACKEND.bat` (klik dua kali) untuk membuka server backend dengan cepat saat demo aplikasi.
+   Atau di Windows, jalankan langsung skrip `backend/JALANKAN_BACKEND.bat` (klik dua kali, atau lewat shortcut Desktop) yang otomatis memeriksa/menyalakan MySQL XAMPP (port `3306`) sekaligus server REST API (port `5000`) sebelum demo aplikasi.
    Server akan aktif di:
    - Akses Browser / Postman: `http://localhost:5000/api/`
    - Akses dari Android Emulator: `http://10.0.2.2:5000/api/`
