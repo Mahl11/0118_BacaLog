@@ -168,16 +168,7 @@ fun AppNavGraph(
             val laporanViewModel: LaporanViewModel = viewModel(factory = factory)
             LaporanLokalScreen(
                 viewModel = laporanViewModel,
-                onNavigateBack = { navController.popBackStack() },
-                onNavigate = { route ->
-                    if (route != Screen.Laporan.route) {
-                        navController.navigate(route) {
-                            popUpTo(Screen.Home.route) { saveState = true }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
-                    }
-                }
+                onNavigateBack = { navController.popBackStack() }
             )
         }
     }

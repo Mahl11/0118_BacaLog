@@ -1,5 +1,6 @@
 package com.example.bacalog.ui.screens.progres
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -338,6 +339,7 @@ fun ProgresListScreen(
         val target = progresToDelete!!
         AlertDialog(
             onDismissRequest = { viewModel.closeDeleteDialog() },
+            containerColor = MaterialTheme.colorScheme.surface,
             title = {
                 Text(
                     text = stringResource(R.string.progres_hapus_konfirmasi_judul),
@@ -382,6 +384,7 @@ fun ProgresItemCard(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius)),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
         elevation = CardDefaults.cardElevation(defaultElevation = dimensionResource(R.dimen.card_elevation))
     ) {
         Column(
@@ -570,6 +573,7 @@ fun AddEditProgresDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
+        containerColor = MaterialTheme.colorScheme.surface,
         title = {
             Text(
                 text = stringResource(

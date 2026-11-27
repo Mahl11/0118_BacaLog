@@ -1,5 +1,6 @@
 package com.example.bacalog.ui.screens.laporan
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -67,8 +68,6 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.example.bacalog.R
 import com.example.bacalog.data.local.FileLaporanDto
-import com.example.bacalog.ui.components.BacaLogBottomBar
-import com.example.bacalog.ui.navigation.Screen
 import com.example.bacalog.viewmodel.LaporanViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -76,7 +75,6 @@ import com.example.bacalog.viewmodel.LaporanViewModel
 fun LaporanLokalScreen(
     viewModel: LaporanViewModel,
     onNavigateBack: () -> Unit,
-    onNavigate: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val fileList by viewModel.fileList.collectAsState()
@@ -125,12 +123,6 @@ fun LaporanLokalScreen(
                 )
             )
         },
-        bottomBar = {
-            BacaLogBottomBar(
-                currentRoute = Screen.Laporan.route,
-                onNavigate = onNavigate
-            )
-        },
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         containerColor = MaterialTheme.colorScheme.background
     ) { innerPadding ->
@@ -142,7 +134,7 @@ fun LaporanLokalScreen(
                 start = dimensionResource(R.dimen.padding_large),
                 top = dimensionResource(R.dimen.padding_large),
                 end = dimensionResource(R.dimen.padding_large),
-                bottom = 88.dp
+                bottom = dimensionResource(R.dimen.padding_large)
             ),
             verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_large))
         ) {
@@ -264,7 +256,8 @@ fun LaporanLokalScreen(
             if (fileList.isEmpty()) {
                 item {
                     Card(
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
                         shape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius)),
                         modifier = Modifier.fillMaxWidth()
                     ) {
@@ -322,6 +315,7 @@ fun LaporanLokalScreen(
         val target = fileToDelete!!
         AlertDialog(
             onDismissRequest = { viewModel.closeDeleteDialog() },
+            containerColor = MaterialTheme.colorScheme.surface,
             title = { Text(stringResource(R.string.laporan_hapus_konfirmasi_judul)) },
             text = {
                 Text(stringResource(R.string.laporan_hapus_konfirmasi_pesan, target.fileName))
@@ -352,6 +346,7 @@ fun FileLaporanCard(
 ) {
     Card(
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
         elevation = CardDefaults.cardElevation(defaultElevation = dimensionResource(R.dimen.card_elevation)),
         shape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius)),
         modifier = modifier.fillMaxWidth()
@@ -435,7 +430,8 @@ fun LaporanPreviewDialog(
                 .fillMaxWidth(0.95f)
                 .fillMaxHeight(0.85f),
             shape = RoundedCornerShape(16.dp),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
         ) {
             Column(
                 modifier = Modifier

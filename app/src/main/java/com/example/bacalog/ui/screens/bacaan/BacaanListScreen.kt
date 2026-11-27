@@ -1,6 +1,7 @@
 package com.example.bacalog.ui.screens.bacaan
 
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -348,6 +349,7 @@ fun BacaanListScreen(
     if (isDeleteDialogOpen && bacaanToDelete != null) {
         AlertDialog(
             onDismissRequest = { viewModel.closeDeleteDialog() },
+            containerColor = MaterialTheme.colorScheme.surface,
             title = {
                 Text(
                     text = stringResource(R.string.bacaan_hapus_konfirmasi_judul),
@@ -394,6 +396,7 @@ private fun BacaanItemCard(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
         ),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
         elevation = CardDefaults.cardElevation(
             defaultElevation = dimensionResource(R.dimen.card_elevation)
         )
@@ -564,6 +567,7 @@ private fun AddEditBacaanDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
+        containerColor = MaterialTheme.colorScheme.surface,
         title = {
             Text(
                 text = if (bacaan == null) {

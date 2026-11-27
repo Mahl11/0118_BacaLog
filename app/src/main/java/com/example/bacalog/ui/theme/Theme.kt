@@ -20,7 +20,8 @@ private val DarkColorScheme = darkColorScheme(
     background = Color(0xFF0F172A),
     surface = Color(0xFF1E293B),
     surfaceVariant = Color(0xFF334155),
-    onSurfaceVariant = Color(0xFFCBD5E1)
+    onSurfaceVariant = Color(0xFFCBD5E1),
+    outlineVariant = DarkBorder
 )
 
 private val LightColorScheme = lightColorScheme(
@@ -32,7 +33,8 @@ private val LightColorScheme = lightColorScheme(
     surfaceVariant = SlateCard,
     onSurfaceVariant = SlateTextSecondary,
     primaryContainer = IndigoContainer,
-    onPrimaryContainer = OnIndigoContainer
+    onPrimaryContainer = OnIndigoContainer,
+    outlineVariant = SlateBorder
 )
 
 @Composable

@@ -1,7 +1,10 @@
 package com.example.bacalog.ui.screens.home
 
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -38,6 +41,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -48,6 +53,8 @@ import com.example.bacalog.ui.components.BacaLogTopBar
 import com.example.bacalog.ui.components.MenuCard
 import com.example.bacalog.ui.components.StatistikCard
 import com.example.bacalog.ui.navigation.Screen
+import com.example.bacalog.ui.theme.IndigoPrimary
+import com.example.bacalog.ui.theme.IndigoSecondary
 import com.example.bacalog.ui.theme.IndigoTertiary
 import com.example.bacalog.ui.theme.SuccessGreen
 import com.example.bacalog.ui.theme.WarningAmber
@@ -97,31 +104,41 @@ fun HomeScreen(
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius)),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+                colors = CardDefaults.cardColors(containerColor = Color.Transparent),
                 elevation = CardDefaults.cardElevation(defaultElevation = dimensionResource(R.dimen.card_elevation))
             ) {
-                Column(
+                Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(dimensionResource(R.dimen.padding_large))
+                        .background(
+                            brush = Brush.horizontalGradient(
+                                colors = listOf(IndigoPrimary, IndigoSecondary)
+                            )
+                        )
                 ) {
-                    val greeting = if (!namaPengguna.isNullOrBlank()) {
-                        stringResource(R.string.dashboard_salam_personal, namaPengguna!!)
-                    } else {
-                        stringResource(R.string.dashboard_salam_pembuka)
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(dimensionResource(R.dimen.padding_large))
+                    ) {
+                        val greeting = if (!namaPengguna.isNullOrBlank()) {
+                            stringResource(R.string.dashboard_salam_personal, namaPengguna!!)
+                        } else {
+                            stringResource(R.string.dashboard_salam_pembuka)
+                        }
+                        Text(
+                            text = greeting,
+                            style = MaterialTheme.typography.titleLarge,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        )
+                        Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_extra_small)))
+                        Text(
+                            text = stringResource(R.string.dashboard_salam_sub),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = Color.White.copy(alpha = 0.9f)
+                        )
                     }
-                    Text(
-                        text = greeting,
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer
-                    )
-                    Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_extra_small)))
-                    Text(
-                        text = stringResource(R.string.dashboard_salam_sub),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer
-                    )
                 }
             }
 
@@ -187,7 +204,8 @@ fun HomeScreen(
                     .clip(cardShape)
                     .clickable { onNavigate(Screen.Target.route) },
                 shape = cardShape,
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
                 elevation = CardDefaults.cardElevation(defaultElevation = dimensionResource(R.dimen.card_elevation))
             ) {
                 Row(

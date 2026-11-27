@@ -1,5 +1,6 @@
 package com.example.bacalog.ui.screens.target
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -84,7 +85,6 @@ import com.example.bacalog.data.model.TargetDto
 import com.example.bacalog.ui.theme.SuccessGreen
 import com.example.bacalog.ui.theme.WarningAmber
 import androidx.compose.material.icons.filled.Description
-import com.example.bacalog.ui.components.BacaLogBottomBar
 import com.example.bacalog.ui.navigation.Screen
 import com.example.bacalog.viewmodel.TargetUiState
 import com.example.bacalog.viewmodel.TargetViewModel
@@ -148,12 +148,6 @@ fun TargetListScreen(
                         )
                     }
                 }
-            )
-        },
-        bottomBar = {
-            BacaLogBottomBar(
-                currentRoute = Screen.Target.route,
-                onNavigate = onNavigate
             )
         },
         floatingActionButton = {
@@ -275,7 +269,8 @@ fun TargetListScreen(
                                 .align(Alignment.Center)
                                 .padding(dimensionResource(R.dimen.padding_large)),
                             shape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius)),
-                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
                         ) {
                             Column(
                                 modifier = Modifier
@@ -379,6 +374,7 @@ fun TargetListScreen(
     if (isDeleteDialogOpen && targetToDelete != null) {
         AlertDialog(
             onDismissRequest = { viewModel.dismissDeleteDialog() },
+            containerColor = MaterialTheme.colorScheme.surface,
             title = {
                 Text(
                     text = stringResource(R.string.target_hapus_konfirmasi_judul),
@@ -428,6 +424,7 @@ fun TargetItemCard(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius)),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(
@@ -632,6 +629,7 @@ fun TargetFormDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
+        containerColor = MaterialTheme.colorScheme.surface,
         title = {
             Text(
                 text = if (isEdit) stringResource(R.string.target_edit_judul) else stringResource(R.string.target_tambah_judul),

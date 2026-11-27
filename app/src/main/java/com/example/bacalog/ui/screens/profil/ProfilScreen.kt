@@ -2,6 +2,7 @@ package com.example.bacalog.ui.screens.profil
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -68,6 +69,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
@@ -84,6 +86,9 @@ import com.example.bacalog.data.model.FokusDto
 import com.example.bacalog.data.model.UserProfilDto
 import com.example.bacalog.ui.components.BacaLogBottomBar
 import com.example.bacalog.ui.navigation.Screen
+import com.example.bacalog.ui.theme.IndigoContainer
+import com.example.bacalog.ui.theme.IndigoPrimary
+import com.example.bacalog.ui.theme.IndigoSecondary
 import com.example.bacalog.ui.theme.SuccessGreen
 import com.example.bacalog.viewmodel.FokusUiState
 import com.example.bacalog.viewmodel.ProfilUiState
@@ -327,7 +332,8 @@ fun ProfilScreen(
                     item {
                         val isSearchingOrFiltering = searchQuery.trim().isNotEmpty() || selectedStatusFilter != "Semua"
                         Card(
-                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
                             shape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius)),
                             modifier = Modifier.fillMaxWidth()
                         ) {
@@ -436,6 +442,7 @@ fun ProfilScreen(
         val target = fokusToDelete!!
         AlertDialog(
             onDismissRequest = { viewModel.closeDeleteFokusDialog() },
+            containerColor = MaterialTheme.colorScheme.surface,
             title = { Text(stringResource(R.string.fokus_hapus_konfirmasi_judul)) },
             text = {
                 Text(stringResource(R.string.fokus_hapus_konfirmasi_pesan, target.fokus_materi))
@@ -460,6 +467,7 @@ fun ProfilScreen(
     if (isLogoutDialogOpen) {
         AlertDialog(
             onDismissRequest = { viewModel.closeLogoutDialog() },
+            containerColor = MaterialTheme.colorScheme.surface,
             title = { Text(stringResource(R.string.dialog_logout_judul)) },
             text = { Text(stringResource(R.string.dialog_logout_pesan)) },
             confirmButton = {
@@ -488,6 +496,7 @@ fun ProfilHeaderCard(
 ) {
     Card(
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
         elevation = CardDefaults.cardElevation(defaultElevation = dimensionResource(R.dimen.card_elevation)),
         shape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius)),
         modifier = modifier.fillMaxWidth()
@@ -507,14 +516,23 @@ fun ProfilHeaderCard(
                     modifier = Modifier
                         .size(68.dp)
                         .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.primary),
+                        .background(
+                            brush = Brush.linearGradient(
+                                colors = listOf(IndigoPrimary, IndigoSecondary)
+                            )
+                        )
+                        .border(
+                            width = 2.5.dp,
+                            color = IndigoContainer,
+                            shape = CircleShape
+                        ),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
                         text = initial,
                         style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onPrimary
+                        color = Color.White
                     )
                 }
 
@@ -638,6 +656,7 @@ fun FokusCard(
 
     Card(
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
         elevation = CardDefaults.cardElevation(defaultElevation = dimensionResource(R.dimen.card_elevation)),
         shape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius)),
         modifier = modifier.fillMaxWidth()
@@ -760,6 +779,7 @@ fun EditProfilDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
+        containerColor = MaterialTheme.colorScheme.surface,
         title = {
             Text(
                 text = stringResource(R.string.profil_dialog_edit_judul),
@@ -875,6 +895,7 @@ fun AddEditFokusDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
+        containerColor = MaterialTheme.colorScheme.surface,
         title = {
             Text(
                 text = stringResource(if (isEdit) R.string.fokus_edit_judul else R.string.fokus_tambah_judul),

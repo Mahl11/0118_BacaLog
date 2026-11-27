@@ -1,5 +1,6 @@
 package com.example.bacalog.ui.screens.kategori
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -277,6 +278,7 @@ fun KategoriListScreen(
     if (isDeleteDialogOpen && kategoriToDelete != null) {
         AlertDialog(
             onDismissRequest = { viewModel.closeDeleteDialog() },
+            containerColor = MaterialTheme.colorScheme.surface,
             title = {
                 Text(
                     text = stringResource(R.string.kategori_hapus_konfirmasi_judul),
@@ -323,6 +325,7 @@ private fun KategoriItemCard(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
         ),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
         elevation = CardDefaults.cardElevation(
             defaultElevation = dimensionResource(R.dimen.card_elevation)
         )
@@ -424,6 +427,7 @@ private fun AddEditKategoriDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
+        containerColor = MaterialTheme.colorScheme.surface,
         title = {
             Text(
                 text = if (kategori == null) {
