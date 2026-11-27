@@ -190,13 +190,13 @@ fun KategoriListScreen(
                                 modifier = Modifier.size(64.dp)
                             )
                             Text(
-                                text = stringResource(R.string.kategori_kosong_judul),
+                                text = if (searchQuery.isNotBlank()) stringResource(R.string.kategori_tidak_ditemukan) else stringResource(R.string.kategori_kosong_judul),
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
                             Text(
-                                text = stringResource(R.string.kategori_kosong_desc),
+                                text = if (searchQuery.isNotBlank()) stringResource(R.string.kategori_tidak_ditemukan_desc) else stringResource(R.string.kategori_kosong_desc),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 textAlign = TextAlign.Center
@@ -242,7 +242,7 @@ fun KategoriListScreen(
                 is KategoriUiState.Success -> {
                     LazyColumn(
                         modifier = Modifier.fillMaxSize(),
-                        contentPadding = PaddingValues(bottom = 80.dp),
+                        contentPadding = PaddingValues(bottom = 88.dp),
                         verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small))
                     ) {
                         items(state.listKategori, key = { it.id }) { kategori ->

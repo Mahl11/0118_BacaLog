@@ -20,7 +20,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -83,7 +82,6 @@ import com.example.bacalog.viewmodel.ProgresViewModel
 @Composable
 fun ProgresListScreen(
     viewModel: ProgresViewModel,
-    onNavigateBack: () -> Unit,
     onNavigate: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -120,14 +118,6 @@ fun ProgresListScreen(
                         text = stringResource(R.string.menu_progres_judul),
                         fontWeight = FontWeight.Bold
                     )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.btn_kembali)
-                        )
-                    }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.surface,
@@ -235,7 +225,7 @@ fun ProgresListScreen(
                             verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small))
                         ) {
                             Icon(
-                                imageVector = Icons.AutoMirrored.Filled.MenuBook,
+                                imageVector = if (searchQuery.isBlank()) Icons.AutoMirrored.Filled.MenuBook else Icons.Default.Search,
                                 contentDescription = null,
                                 modifier = Modifier.size(64.dp),
                                 tint = MaterialTheme.colorScheme.outline
@@ -254,7 +244,7 @@ fun ProgresListScreen(
                                 text = if (searchQuery.isBlank()) {
                                     stringResource(R.string.progres_kosong_desc)
                                 } else {
-                                    "Coba cari dengan kata kunci materi atau tanggal lain."
+                                    stringResource(R.string.progres_tidak_ditemukan_desc)
                                 },
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,

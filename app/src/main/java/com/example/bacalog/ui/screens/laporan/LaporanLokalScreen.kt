@@ -137,7 +137,12 @@ fun LaporanLokalScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding),
-            contentPadding = PaddingValues(dimensionResource(R.dimen.padding_large)),
+            contentPadding = PaddingValues(
+                start = dimensionResource(R.dimen.padding_large),
+                top = dimensionResource(R.dimen.padding_large),
+                end = dimensionResource(R.dimen.padding_large),
+                bottom = 88.dp
+            ),
             verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_large))
         ) {
             // 1. Banner Card: Informasi Internal Storage & Tombol Ekspor

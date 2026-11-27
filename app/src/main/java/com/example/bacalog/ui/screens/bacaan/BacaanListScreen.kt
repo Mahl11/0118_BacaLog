@@ -1,7 +1,7 @@
 package com.example.bacalog.ui.screens.bacaan
 
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,12 +16,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -40,6 +40,7 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -86,7 +87,6 @@ import com.example.bacalog.viewmodel.BacaanViewModel
 @Composable
 fun BacaanListScreen(
     viewModel: BacaanViewModel,
-    onNavigateBack: () -> Unit,
     onNavigate: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -125,14 +125,6 @@ fun BacaanListScreen(
                         fontWeight = FontWeight.Bold
                     )
                 },
-                navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.btn_kembali)
-                        )
-                    }
-                },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.surface,
                     titleContentColor = MaterialTheme.colorScheme.primary
@@ -165,11 +157,10 @@ fun BacaanListScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(horizontal = dimensionResource(R.dimen.padding_medium))
         ) {
             Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_small)))
 
-            // 1. Search Bar Pencarian Judul / Penulis
+            // 1. Search Bar Pencarian Judul / Mata Kuliah / Penulis
             OutlinedTextField(
                 value = searchQuery,
                 onValueChange = { viewModel.onSearchQueryChanged(it) },
@@ -193,12 +184,14 @@ fun BacaanListScreen(
                 },
                 singleLine = true,
                 shape = RoundedCornerShape(dimensionResource(R.dimen.input_corner_radius)),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = dimensionResource(R.dimen.padding_medium))
             )
 
             Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_small)))
 
-            // 2. Filter Status Chips Row
+            // 2. Filter Status Chips LazyRow (Seragam Soft Blue Container + Deep Indigo, Anti Terpotong)
             val filterOptions = listOf(
                 "Semua" to stringResource(R.string.bacaan_status_semua),
                 "Belum Dibaca" to stringResource(R.string.bacaan_status_belum),
@@ -206,17 +199,21 @@ fun BacaanListScreen(
                 "Selesai" to stringResource(R.string.bacaan_status_selesai)
             )
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .horizontalScroll(rememberScrollState()),
-                horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small))
+            LazyRow(
+                modifier = Modifier.fillMaxWidth(),
+                contentPadding = PaddingValues(horizontal = dimensionResource(R.dimen.padding_medium)),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                filterOptions.forEach { (key, label) ->
+                items(filterOptions) { (key, label) ->
                     FilterChip(
                         selected = selectedStatusFilter == key,
                         onClick = { viewModel.onStatusFilterSelected(key) },
-                        label = { Text(label) }
+                        label = { Text(label) },
+                        colors = FilterChipDefaults.filterChipColors(
+                            selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                            selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                            selectedLeadingIconColor = MaterialTheme.colorScheme.onPrimaryContainer
+                        )
                     )
                 }
             }
@@ -224,94 +221,100 @@ fun BacaanListScreen(
             Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_small)))
 
             // 3. Konten Sesuai UI State
-            when (val state = uiState) {
-                is BacaanUiState.Loading -> {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
-                    }
-                }
-                is BacaanUiState.Empty -> {
-                    val isSearching = searchQuery.trim().isNotEmpty()
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small)),
-                            modifier = Modifier.padding(dimensionResource(R.dimen.padding_large))
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = dimensionResource(R.dimen.padding_medium))
+            ) {
+                when (val state = uiState) {
+                    is BacaanUiState.Loading -> {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
                         ) {
-                            Icon(
-                                imageVector = if (isSearching) Icons.Default.Search else Icons.AutoMirrored.Filled.MenuBook,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
-                                modifier = Modifier.size(64.dp)
-                            )
-                            Text(
-                                text = if (isSearching) stringResource(R.string.bacaan_tidak_ditemukan) else stringResource(R.string.bacaan_kosong_judul),
-                                style = MaterialTheme.typography.titleMedium,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                            Text(
-                                text = if (isSearching) stringResource(R.string.bacaan_tidak_ditemukan_desc) else stringResource(R.string.bacaan_kosong_desc),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                textAlign = TextAlign.Center
-                            )
+                            CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
                         }
                     }
-                }
-                is BacaanUiState.Error -> {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Card(
-                            colors = CardDefaults.cardColors(
-                                containerColor = MaterialTheme.colorScheme.errorContainer
-                            ),
-                            shape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius)),
-                            modifier = Modifier.fillMaxWidth()
+                    is BacaanUiState.Empty -> {
+                        val isSearchingOrFiltering = searchQuery.trim().isNotEmpty() || selectedStatusFilter != "Semua"
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
                         ) {
                             Column(
-                                modifier = Modifier.padding(dimensionResource(R.dimen.padding_medium)),
                                 horizontalAlignment = Alignment.CenterHorizontally,
-                                verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small))
+                                verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small)),
+                                modifier = Modifier.padding(dimensionResource(R.dimen.padding_large))
                             ) {
+                                Icon(
+                                    imageVector = if (isSearchingOrFiltering) Icons.Default.Search else Icons.AutoMirrored.Filled.MenuBook,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
+                                    modifier = Modifier.size(64.dp)
+                                )
                                 Text(
-                                    text = state.message,
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    color = MaterialTheme.colorScheme.onErrorContainer,
+                                    text = if (isSearchingOrFiltering) stringResource(R.string.bacaan_tidak_ditemukan) else stringResource(R.string.bacaan_kosong_judul),
+                                    style = MaterialTheme.typography.titleMedium,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                                Text(
+                                    text = if (isSearchingOrFiltering) stringResource(R.string.bacaan_tidak_ditemukan_desc) else stringResource(R.string.bacaan_kosong_desc),
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     textAlign = TextAlign.Center
                                 )
-                                Button(
-                                    onClick = { viewModel.loadBacaan() },
-                                    colors = ButtonDefaults.buttonColors(
-                                        containerColor = MaterialTheme.colorScheme.error
-                                    )
+                            }
+                        }
+                    }
+                    is BacaanUiState.Error -> {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Card(
+                                colors = CardDefaults.cardColors(
+                                    containerColor = MaterialTheme.colorScheme.errorContainer
+                                ),
+                                shape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius)),
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Column(
+                                    modifier = Modifier.padding(dimensionResource(R.dimen.padding_medium)),
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small))
                                 ) {
-                                    Text(stringResource(R.string.btn_coba_lagi))
+                                    Text(
+                                        text = state.message,
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        color = MaterialTheme.colorScheme.onErrorContainer,
+                                        textAlign = TextAlign.Center
+                                    )
+                                    Button(
+                                        onClick = { viewModel.loadBacaan() },
+                                        colors = ButtonDefaults.buttonColors(
+                                            containerColor = MaterialTheme.colorScheme.error
+                                        )
+                                    ) {
+                                        Text(stringResource(R.string.btn_coba_lagi))
+                                    }
                                 }
                             }
                         }
                     }
-                }
-                is BacaanUiState.Success -> {
-                    LazyColumn(
-                        modifier = Modifier.fillMaxSize(),
-                        contentPadding = PaddingValues(bottom = 88.dp),
-                        verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small))
-                    ) {
-                        items(state.listBacaan, key = { it.id }) { bacaan ->
-                            BacaanItemCard(
-                                bacaan = bacaan,
-                                onEditClick = { viewModel.openEditDialog(bacaan) },
-                                onDeleteClick = { viewModel.openDeleteDialog(bacaan) }
-                            )
+                    is BacaanUiState.Success -> {
+                        LazyColumn(
+                            modifier = Modifier.fillMaxSize(),
+                            contentPadding = PaddingValues(bottom = 88.dp),
+                            verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small))
+                        ) {
+                            items(state.listBacaan, key = { it.id }) { bacaan ->
+                                BacaanItemCard(
+                                    bacaan = bacaan,
+                                    onEditClick = { viewModel.openEditDialog(bacaan) },
+                                    onDeleteClick = { viewModel.openDeleteDialog(bacaan) }
+                                )
+                            }
                         }
                     }
                 }
@@ -463,15 +466,19 @@ private fun BacaanItemCard(
                 )
             }
 
-            // Indikator Progres Halaman
+            // Indikator Progres Halaman (Animated)
             val progressPercent = if (bacaan.totalHalaman > 0) {
                 (bacaan.halamanTerakhir.toFloat() / bacaan.totalHalaman.toFloat()).coerceIn(0f, 1f)
             } else 0f
+            val animatedProgress by animateFloatAsState(
+                targetValue = progressPercent,
+                label = "bacaan_progress_anim"
+            )
 
             Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_extra_small)))
 
             LinearProgressIndicator(
-                progress = { progressPercent },
+                progress = { animatedProgress },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(6.dp),

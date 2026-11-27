@@ -42,7 +42,9 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.material3.FilterChip
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -277,8 +279,9 @@ fun TargetListScreen(
                                     tint = MaterialTheme.colorScheme.primary
                                 )
                                 Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_small)))
+                                val isSearchingOrFiltering = searchQuery.isNotBlank() || selectedFilter != stringResource(R.string.target_status_semua)
                                 Text(
-                                    text = if (searchQuery.isNotBlank() || selectedFilter != stringResource(R.string.target_status_semua))
+                                    text = if (isSearchingOrFiltering)
                                         stringResource(R.string.target_tidak_ditemukan)
                                     else
                                         stringResource(R.string.target_kosong_judul),
@@ -288,7 +291,10 @@ fun TargetListScreen(
                                 )
                                 Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_extra_small)))
                                 Text(
-                                    text = stringResource(R.string.target_kosong_desc),
+                                    text = if (isSearchingOrFiltering)
+                                        stringResource(R.string.target_tidak_ditemukan_desc)
+                                    else
+                                        stringResource(R.string.target_kosong_desc),
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     textAlign = TextAlign.Center
@@ -325,7 +331,7 @@ fun TargetListScreen(
                         LazyColumn(
                             modifier = Modifier.fillMaxSize(),
                             verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small)),
-                            contentPadding = PaddingValues(bottom = 80.dp)
+                            contentPadding = PaddingValues(bottom = 88.dp)
                         ) {
                             items(state.listTarget, key = { it.id }) { target ->
                                 TargetItemCard(
@@ -496,9 +502,13 @@ fun TargetItemCard(
 
             Spacer(modifier = Modifier.height(4.dp))
 
-            // Progress Bar
+            // Progress Bar (Animated)
+            val animatedTargetProgress by animateFloatAsState(
+                targetValue = progressRatio,
+                label = "target_progress_anim"
+            )
             LinearProgressIndicator(
-                progress = { progressRatio },
+                progress = { animatedTargetProgress },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(6.dp),
