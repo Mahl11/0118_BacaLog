@@ -197,7 +197,7 @@ fun ProgresListScreen(
                     }
                 },
                 singleLine = true,
-                shape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius))
+                shape = RoundedCornerShape(dimensionResource(R.dimen.input_corner_radius))
             )
 
             // Konten Berdasarkan State UI

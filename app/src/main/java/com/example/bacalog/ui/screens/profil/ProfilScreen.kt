@@ -17,8 +17,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.Add
@@ -31,6 +33,8 @@ import androidx.compose.material.icons.filled.Lightbulb
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.RadioButtonUnchecked
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -70,6 +74,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
@@ -155,7 +160,8 @@ fun ProfilScreen(
                 )
             }
         },
-        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+        containerColor = MaterialTheme.colorScheme.background
     ) { innerPadding ->
         LazyColumn(
             modifier = Modifier
@@ -262,7 +268,7 @@ fun ProfilScreen(
                         }
                     },
                     singleLine = true,
-                    shape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius)),
+                    shape = RoundedCornerShape(dimensionResource(R.dimen.input_corner_radius)),
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -729,6 +735,8 @@ fun EditProfilDialog(
     var bio by remember { mutableStateOf(user?.bio_belajar ?: "") }
     var passwordLama by remember { mutableStateOf("") }
     var passwordBaru by remember { mutableStateOf("") }
+    var showPasswordLama by remember { mutableStateOf(false) }
+    var showPasswordBaru by remember { mutableStateOf(false) }
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -740,6 +748,7 @@ fun EditProfilDialog(
         },
         text = {
             Column(
+                modifier = Modifier.verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium))
             ) {
                 if (!errorMessage.isNullOrBlank()) {
@@ -762,6 +771,7 @@ fun EditProfilDialog(
                     onValueChange = { nama = it },
                     label = { Text(stringResource(R.string.field_nama)) },
                     singleLine = true,
+                    shape = RoundedCornerShape(dimensionResource(R.dimen.input_corner_radius)),
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -771,6 +781,7 @@ fun EditProfilDialog(
                     label = { Text(stringResource(R.string.profil_bio_label)) },
                     placeholder = { Text(stringResource(R.string.profil_bio_default)) },
                     maxLines = 3,
+                    shape = RoundedCornerShape(dimensionResource(R.dimen.input_corner_radius)),
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -779,8 +790,17 @@ fun EditProfilDialog(
                     onValueChange = { passwordLama = it },
                     label = { Text(stringResource(R.string.profil_password_lama_label)) },
                     placeholder = { Text(stringResource(R.string.profil_password_lama_placeholder)) },
+                    trailingIcon = {
+                        IconButton(onClick = { showPasswordLama = !showPasswordLama }) {
+                            Icon(
+                                imageVector = if (showPasswordLama) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                                contentDescription = stringResource(R.string.desc_toggle_password)
+                            )
+                        }
+                    },
                     singleLine = true,
-                    visualTransformation = PasswordVisualTransformation(),
+                    visualTransformation = if (showPasswordLama) VisualTransformation.None else PasswordVisualTransformation(),
+                    shape = RoundedCornerShape(dimensionResource(R.dimen.input_corner_radius)),
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -789,8 +809,17 @@ fun EditProfilDialog(
                     onValueChange = { passwordBaru = it },
                     label = { Text(stringResource(R.string.profil_password_baru_label)) },
                     placeholder = { Text(stringResource(R.string.profil_password_baru_placeholder)) },
+                    trailingIcon = {
+                        IconButton(onClick = { showPasswordBaru = !showPasswordBaru }) {
+                            Icon(
+                                imageVector = if (showPasswordBaru) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                                contentDescription = stringResource(R.string.desc_toggle_password)
+                            )
+                        }
+                    },
                     singleLine = true,
-                    visualTransformation = PasswordVisualTransformation(),
+                    visualTransformation = if (showPasswordBaru) VisualTransformation.None else PasswordVisualTransformation(),
+                    shape = RoundedCornerShape(dimensionResource(R.dimen.input_corner_radius)),
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -834,6 +863,7 @@ fun AddEditFokusDialog(
         },
         text = {
             Column(
+                modifier = Modifier.verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium))
             ) {
                 if (!errorMessage.isNullOrBlank()) {

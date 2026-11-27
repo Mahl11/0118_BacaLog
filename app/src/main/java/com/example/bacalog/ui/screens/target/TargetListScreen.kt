@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -136,7 +137,7 @@ fun TargetListScreen(
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.surface,
-                    titleContentColor = MaterialTheme.colorScheme.onSurface
+                    titleContentColor = MaterialTheme.colorScheme.primary
                 ),
                 actions = {
                     IconButton(onClick = { onNavigate(Screen.Laporan.route) }) {
@@ -174,7 +175,6 @@ fun TargetListScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(horizontal = dimensionResource(R.dimen.padding_medium))
         ) {
             Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_small)))
 
@@ -182,7 +182,9 @@ fun TargetListScreen(
             OutlinedTextField(
                 value = searchQuery,
                 onValueChange = { viewModel.onSearchQueryChanged(it) },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = dimensionResource(R.dimen.padding_medium)),
                 placeholder = { Text(text = stringResource(R.string.target_search_placeholder)) },
                 leadingIcon = {
                     Icon(
@@ -201,23 +203,24 @@ fun TargetListScreen(
                         }
                     }
                 },
-                shape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius)),
+                shape = RoundedCornerShape(dimensionResource(R.dimen.input_corner_radius)),
                 singleLine = true
             )
 
             Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_small)))
 
-            // 2. Baris Filter Status Target
-            Row(
+            // 2. Baris Filter Status Target (LazyRow Anti Terpotong)
+            val filters = listOf(
+                stringResource(R.string.target_status_semua),
+                stringResource(R.string.target_status_berjalan),
+                stringResource(R.string.target_status_tercapai)
+            )
+            LazyRow(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small))
+                contentPadding = PaddingValues(horizontal = dimensionResource(R.dimen.padding_medium)),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                val filters = listOf(
-                    stringResource(R.string.target_status_semua),
-                    stringResource(R.string.target_status_berjalan),
-                    stringResource(R.string.target_status_tercapai)
-                )
-                filters.forEach { statusName ->
+                items(filters) { statusName ->
                     val isSelected = selectedFilter.equals(statusName, ignoreCase = true)
                     FilterChip(
                         selected = isSelected,
@@ -234,7 +237,8 @@ fun TargetListScreen(
                         } else null,
                         colors = FilterChipDefaults.filterChipColors(
                             selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                            selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer
+                            selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                            selectedLeadingIconColor = MaterialTheme.colorScheme.onPrimaryContainer
                         )
                     )
                 }
@@ -247,6 +251,7 @@ fun TargetListScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
+                    .padding(horizontal = dimensionResource(R.dimen.padding_medium))
             ) {
                 when (val state = uiState) {
                     is TargetUiState.Loading -> {
