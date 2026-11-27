@@ -215,6 +215,7 @@ fun ProfilScreen(
                                 )
                                 Button(
                                     onClick = { viewModel.loadProfil() },
+                                    shape = RoundedCornerShape(dimensionResource(R.dimen.button_corner_radius)),
                                     colors = ButtonDefaults.buttonColors(
                                         containerColor = MaterialTheme.colorScheme.error
                                     )
@@ -286,14 +287,22 @@ fun ProfilScreen(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     items(filterOptions) { (key, label) ->
+                        val isSelected = selectedStatusFilter == key
                         FilterChip(
-                            selected = selectedStatusFilter == key,
+                            selected = isSelected,
                             onClick = { viewModel.onStatusFilterSelected(key) },
                             label = { Text(label) },
                             colors = FilterChipDefaults.filterChipColors(
+                                containerColor = MaterialTheme.colorScheme.surface,
                                 selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
                                 selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
                                 selectedLeadingIconColor = MaterialTheme.colorScheme.onPrimaryContainer
+                            ),
+                            border = FilterChipDefaults.filterChipBorder(
+                                enabled = true,
+                                selected = isSelected,
+                                borderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.45f),
+                                selectedBorderColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
                             )
                         )
                     }
@@ -382,6 +391,7 @@ fun ProfilScreen(
                                 )
                                 Button(
                                     onClick = { viewModel.loadFokus() },
+                                    shape = RoundedCornerShape(dimensionResource(R.dimen.button_corner_radius)),
                                     colors = ButtonDefaults.buttonColors(
                                         containerColor = MaterialTheme.colorScheme.error
                                     )
@@ -571,7 +581,11 @@ fun ProfilHeaderCard(
             // Tombol Ubah Profil & Tombol Keluar (Logout)
             OutlinedButton(
                 onClick = onEditClick,
-                shape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius)),
+                colors = ButtonDefaults.outlinedButtonColors(
+                    contentColor = MaterialTheme.colorScheme.primary
+                ),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.6f)),
+                shape = RoundedCornerShape(dimensionResource(R.dimen.button_corner_radius)),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Icon(
@@ -580,7 +594,10 @@ fun ProfilHeaderCard(
                     modifier = Modifier.size(18.dp)
                 )
                 Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_small)))
-                Text(stringResource(R.string.profil_btn_edit))
+                Text(
+                    text = stringResource(R.string.profil_btn_edit),
+                    fontWeight = FontWeight.SemiBold
+                )
             }
 
             OutlinedButton(
@@ -589,7 +606,7 @@ fun ProfilHeaderCard(
                     contentColor = MaterialTheme.colorScheme.error
                 ),
                 border = BorderStroke(1.dp, MaterialTheme.colorScheme.error.copy(alpha = 0.6f)),
-                shape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius)),
+                shape = RoundedCornerShape(dimensionResource(R.dimen.button_corner_radius)),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Icon(
@@ -648,10 +665,13 @@ fun FokusCard(
                     )
                 }
 
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     IconButton(
                         onClick = onToggleStatus,
-                        modifier = Modifier.size(36.dp)
+                        modifier = Modifier.size(40.dp)
                     ) {
                         Icon(
                             imageVector = if (isSelesai) Icons.Default.CheckCircle else Icons.Default.RadioButtonUnchecked,
@@ -661,7 +681,7 @@ fun FokusCard(
                     }
                     IconButton(
                         onClick = onEditClick,
-                        modifier = Modifier.size(36.dp)
+                        modifier = Modifier.size(40.dp)
                     ) {
                         Icon(
                             imageVector = Icons.Default.Edit,
@@ -671,7 +691,7 @@ fun FokusCard(
                     }
                     IconButton(
                         onClick = onDeleteClick,
-                        modifier = Modifier.size(36.dp)
+                        modifier = Modifier.size(40.dp)
                     ) {
                         Icon(
                             imageVector = Icons.Default.Delete,
@@ -913,14 +933,22 @@ fun AddEditFokusDialog(
                     horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small))
                 ) {
                     listOf("Aktif", "Selesai").forEach { st ->
+                        val isSelected = statusFokus == st
                         FilterChip(
-                            selected = statusFokus == st,
+                            selected = isSelected,
                             onClick = { statusFokus = st },
                             label = { Text(st) },
                             colors = FilterChipDefaults.filterChipColors(
+                                containerColor = MaterialTheme.colorScheme.surface,
                                 selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
                                 selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
                                 selectedLeadingIconColor = MaterialTheme.colorScheme.onPrimaryContainer
+                            ),
+                            border = FilterChipDefaults.filterChipBorder(
+                                enabled = true,
+                                selected = isSelected,
+                                borderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.45f),
+                                selectedBorderColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
                             )
                         )
                     }

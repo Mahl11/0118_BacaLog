@@ -236,9 +236,16 @@ fun TargetListScreen(
                             }
                         } else null,
                         colors = FilterChipDefaults.filterChipColors(
+                            containerColor = MaterialTheme.colorScheme.surface,
                             selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
                             selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
                             selectedLeadingIconColor = MaterialTheme.colorScheme.onPrimaryContainer
+                        ),
+                        border = FilterChipDefaults.filterChipBorder(
+                            enabled = true,
+                            selected = isSelected,
+                            borderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.45f),
+                            selectedBorderColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
                         )
                     )
                 }
@@ -325,6 +332,7 @@ fun TargetListScreen(
                             Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_medium)))
                             Button(
                                 onClick = { viewModel.loadTarget() },
+                                shape = RoundedCornerShape(dimensionResource(R.dimen.button_corner_radius)),
                                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                             ) {
                                 Text(text = stringResource(R.string.btn_coba_lagi))
@@ -546,10 +554,13 @@ fun TargetItemCard(
                 }
 
                 // Tombol Aksi
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     IconButton(
                         onClick = onToggleStatus,
-                        modifier = Modifier.size(36.dp)
+                        modifier = Modifier.size(40.dp)
                     ) {
                         Icon(
                             imageVector = if (isTercapai) Icons.Default.PendingActions else Icons.Default.CheckCircle,
@@ -561,7 +572,7 @@ fun TargetItemCard(
 
                     IconButton(
                         onClick = onEdit,
-                        modifier = Modifier.size(36.dp)
+                        modifier = Modifier.size(40.dp)
                     ) {
                         Icon(
                             imageVector = Icons.Default.Edit,
@@ -573,7 +584,7 @@ fun TargetItemCard(
 
                     IconButton(
                         onClick = onDelete,
-                        modifier = Modifier.size(36.dp)
+                        modifier = Modifier.size(40.dp)
                     ) {
                         Icon(
                             imageVector = Icons.Default.Delete,

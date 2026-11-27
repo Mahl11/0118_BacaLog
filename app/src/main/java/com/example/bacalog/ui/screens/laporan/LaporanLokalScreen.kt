@@ -397,7 +397,10 @@ fun FileLaporanCard(
                 )
             }
 
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 IconButton(onClick = onBacaClick) {
                     Icon(
                         imageVector = Icons.Default.Visibility,

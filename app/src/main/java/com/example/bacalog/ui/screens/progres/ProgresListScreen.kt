@@ -280,6 +280,7 @@ fun ProgresListScreen(
                                 )
                                 Button(
                                     onClick = { viewModel.loadProgres() },
+                                    shape = RoundedCornerShape(dimensionResource(R.dimen.button_corner_radius)),
                                     colors = ButtonDefaults.buttonColors(
                                         containerColor = MaterialTheme.colorScheme.error
                                     )
@@ -503,12 +504,12 @@ fun ProgresItemCard(
             // Tombol Aksi: Edit & Hapus
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End,
+                horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.End),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 IconButton(
                     onClick = onEditClick,
-                    modifier = Modifier.size(36.dp)
+                    modifier = Modifier.size(40.dp)
                 ) {
                     Icon(
                         imageVector = Icons.Default.Edit,
@@ -520,7 +521,7 @@ fun ProgresItemCard(
 
                 IconButton(
                     onClick = onDeleteClick,
-                    modifier = Modifier.size(36.dp)
+                    modifier = Modifier.size(40.dp)
                 ) {
                     Icon(
                         imageVector = Icons.Default.Delete,

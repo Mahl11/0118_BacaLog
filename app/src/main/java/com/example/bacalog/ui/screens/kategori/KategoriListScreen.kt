@@ -231,6 +231,7 @@ fun KategoriListScreen(
                                 )
                                 Button(
                                     onClick = { viewModel.loadKategori() },
+                                    shape = RoundedCornerShape(dimensionResource(R.dimen.button_corner_radius)),
                                     colors = ButtonDefaults.buttonColors(
                                         containerColor = MaterialTheme.colorScheme.error
                                     )
@@ -387,20 +388,25 @@ private fun KategoriItemCard(
             }
 
             // Tombol Edit dan Hapus
-            IconButton(onClick = onEditClick) {
-                Icon(
-                    imageVector = Icons.Default.Edit,
-                    contentDescription = stringResource(R.string.desc_ubah_kategori),
-                    tint = MaterialTheme.colorScheme.primary
-                )
-            }
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                IconButton(onClick = onEditClick) {
+                    Icon(
+                        imageVector = Icons.Default.Edit,
+                        contentDescription = stringResource(R.string.desc_ubah_kategori),
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
 
-            IconButton(onClick = onDeleteClick) {
-                Icon(
-                    imageVector = Icons.Default.Delete,
-                    contentDescription = stringResource(R.string.desc_hapus_kategori),
-                    tint = MaterialTheme.colorScheme.error
-                )
+                IconButton(onClick = onDeleteClick) {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = stringResource(R.string.desc_hapus_kategori),
+                        tint = MaterialTheme.colorScheme.error
+                    )
+                }
             }
         }
     }

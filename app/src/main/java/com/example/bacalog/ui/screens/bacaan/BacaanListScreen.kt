@@ -205,14 +205,22 @@ fun BacaanListScreen(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(filterOptions) { (key, label) ->
+                    val isSelected = selectedStatusFilter == key
                     FilterChip(
-                        selected = selectedStatusFilter == key,
+                        selected = isSelected,
                         onClick = { viewModel.onStatusFilterSelected(key) },
                         label = { Text(label) },
                         colors = FilterChipDefaults.filterChipColors(
+                            containerColor = MaterialTheme.colorScheme.surface,
                             selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
                             selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
                             selectedLeadingIconColor = MaterialTheme.colorScheme.onPrimaryContainer
+                        ),
+                        border = FilterChipDefaults.filterChipBorder(
+                            enabled = true,
+                            selected = isSelected,
+                            borderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.45f),
+                            selectedBorderColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
                         )
                     )
                 }
@@ -292,6 +300,7 @@ fun BacaanListScreen(
                                     )
                                     Button(
                                         onClick = { viewModel.loadBacaan() },
+                                        shape = RoundedCornerShape(dimensionResource(R.dimen.button_corner_radius)),
                                         colors = ButtonDefaults.buttonColors(
                                             containerColor = MaterialTheme.colorScheme.error
                                         )
@@ -502,7 +511,10 @@ private fun BacaanItemCard(
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
 
-                Row {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     IconButton(onClick = onEditClick) {
                         Icon(
                             imageVector = Icons.Default.Edit,
