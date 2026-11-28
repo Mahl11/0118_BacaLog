@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.bacalog.data.model.DashboardStatistikDto
 import com.example.bacalog.data.model.TargetDto
 import com.example.bacalog.data.remote.ApiService
+import com.example.bacalog.util.DailyProgressPoint
+import com.example.bacalog.util.WeeklyProgressHelper
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -27,6 +29,9 @@ class HomeViewModel(private val apiService: ApiService) : ViewModel() {
     private val _activeTargetSummary = MutableStateFlow(ActiveTargetSummary())
     val activeTargetSummary: StateFlow<ActiveTargetSummary> = _activeTargetSummary.asStateFlow()
 
+    private val _weeklyProgress = MutableStateFlow(WeeklyProgressHelper.buildLast7Days(emptyList()))
+    val weeklyProgress: StateFlow<List<DailyProgressPoint>> = _weeklyProgress.asStateFlow()
+
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
@@ -41,6 +46,7 @@ class HomeViewModel(private val apiService: ApiService) : ViewModel() {
                 val statDeferred = async { runCatching { apiService.getDashboardStatistik() }.getOrNull() }
                 val profilDeferred = async { runCatching { apiService.getProfil() }.getOrNull() }
                 val targetDeferred = async { runCatching { apiService.getTargetList() }.getOrNull() }
+                val progresDeferred = async { runCatching { apiService.getProgresList() }.getOrNull() }
 
                 val statRes = statDeferred.await()
                 if (statRes != null && statRes.isSuccessful && statRes.body() != null) {
@@ -74,6 +80,11 @@ class HomeViewModel(private val apiService: ApiService) : ViewModel() {
                         highlightedTarget = activeTargets.firstOrNull()
                     )
                 }
+
+                val progresRes = progresDeferred.await()
+                if (progresRes != null && progresRes.isSuccessful && progresRes.body() != null) {
+                    _weeklyProgress.value = WeeklyProgressHelper.buildLast7Days(progresRes.body()!!.data)
+                }
             } catch (e: Exception) {
                 _errorMessage.value = "Gagal memuat ringkasan belajar. Periksa koneksi server Anda."
             } finally {
@@ -86,6 +97,7 @@ class HomeViewModel(private val apiService: ApiService) : ViewModel() {
         _statistik.value = DashboardStatistikDto()
         _namaPengguna.value = null
         _activeTargetSummary.value = ActiveTargetSummary()
+        _weeklyProgress.value = WeeklyProgressHelper.buildLast7Days(emptyList())
         _errorMessage.value = null
         _isLoading.value = false
     }
