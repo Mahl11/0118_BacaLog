@@ -5,6 +5,7 @@
 - **Kelas :** D
 - **Mata Kuliah :** Pengembangan Aplikasi Mobile (PAM) 2026
 - **Format Repositori :** `0118_BacaLog`
+- **Repositori Backend API :** `https://github.com/Mahl11/0118_API_BacaLog.git`
 
 ---
 
@@ -33,15 +34,32 @@ Aplikasi ini menggunakan arsitektur **MVVM (Model-View-ViewModel)** dengan **Nav
 
 ---
 
+## Progress Mingguan (Pertemuan 9 – Pertemuan 16)
+
+| Pertemuan | Tanggal | Ringkasan Progres | Commit Hash |
+|---|---|---|---|
+| **Pertemuan 9** | 22–28 November 2026 | Inisialisasi proyek Compose & MVVM, autentikasi JWT (Login, Register, Auto-Refresh + thread-safe lock), navigasi Compose + Beranda (`PullToRefreshBox`), 5 modul CRUDS penuh, `DatePickerDialog` Material 3, penyimpanan berkas lokal `.txt`, unit test JUnit 4, serta penyelarasan UI/UX & pemisahan repo API (`0118_API_BacaLog`). | `e713bb2`, `f3d563c`, `a65e88f`, `aa858fa`, `4aaf4ba`, `d666271`, `910a5b8`, `03b7ef3`, `81743e2`, `24b82b4`, `7db096d`, `d2354cd`, `6021ab0`, `ea3b0b8` |
+| **Pertemuan 10** | Desember 2026 | *Akan diperbarui sesuai progres mingguan bulan Desember.* | - |
+| **Pertemuan 11** | Desember 2026 | *Akan diperbarui sesuai progres mingguan bulan Desember.* | - |
+| **Pertemuan 12** | Desember 2026 | *Akan diperbarui sesuai progres mingguan bulan Desember.* | - |
+| **Pertemuan 13** | Desember 2026 | *Akan diperbarui sesuai progres mingguan bulan Desember.* | - |
+| **Pertemuan 14** | Desember 2026 | *Akan diperbarui sesuai progres mingguan bulan Desember.* | - |
+| **Pertemuan 15** | Desember 2026 | *Akan diperbarui sesuai progres mingguan bulan Desember.* | - |
+| **Pertemuan 16** | Desember 2026 | *Akan diperbarui sesuai progres mingguan bulan Desember.* | - |
+
+---
+
 ## Panduan Menjalankan Aplikasi
 
-1. **Jalankan Basis Data & Backend Server:**
+1. **Jalankan Basis Data & Backend Server (`0118_API_BacaLog`):**
    ```bash
-   # Masuk ke folder backend
-   cd backend
+   # Clone atau buka repositori backend API terpisah
+   git clone https://github.com/Mahl11/0118_API_BacaLog.git
+   cd 0118_API_BacaLog
    npm install
-   node server.js
+   npm start
    ```
+   *(Atau jalankan `JALANKAN_BACKEND.bat` untuk pengecekan otomatis MySQL port `3306` dan server Express port `5000`)*
    *Base URL API Android Emulator:* `http://10.0.2.2:5000/api/`
 
 2. **Jalankan Proyek Android Studio:**
