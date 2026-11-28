@@ -12,6 +12,11 @@ import okhttp3.Response
 import org.json.JSONObject
 
 class AuthInterceptor(private val tokenManager: TokenManager) : Interceptor {
+
+    companion object {
+        private val refreshLock = Any()
+    }
+
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request()
 
@@ -42,30 +47,44 @@ class AuthInterceptor(private val tokenManager: TokenManager) : Interceptor {
 
         val response = chain.proceed(authenticatedRequest)
 
-        // Handle 401 Unauthorized (Token kadaluarsa) -> Auto Refresh Token
+        // Handle 401 Unauthorized (Token kadaluarsa) -> Auto Refresh Token (Thread-Safe Lock)
         if (response.code == 401 && !isAuthEndpoint) {
-            val refreshToken = runBlocking {
-                tokenManager.refreshToken.firstOrNull()
-            }
-
-            if (!refreshToken.isNullOrBlank()) {
-                val newAccessToken = refreshAccessToken(originalRequest, refreshToken)
-                if (!newAccessToken.isNullOrBlank()) {
-                    runBlocking {
-                        tokenManager.updateAccessToken(newAccessToken)
-                    }
+            synchronized(refreshLock) {
+                val latestToken = runBlocking {
+                    tokenManager.accessToken.firstOrNull()
+                }
+                if (!latestToken.isNullOrBlank() && latestToken != token) {
                     response.close()
-                    val retryRequest = originalRequest.newBuilder()
-                        .header("Authorization", "Bearer $newAccessToken")
+                    val retryWithLatest = originalRequest.newBuilder()
+                        .header("Authorization", "Bearer $latestToken")
                         .header("Accept", "application/json")
                         .build()
-                    return chain.proceed(retryRequest)
+                    return chain.proceed(retryWithLatest)
                 }
-            }
 
-            // Jika refresh token juga gagal atau tidak ada, bersihkan sesi
-            runBlocking {
-                tokenManager.clearTokens()
+                val refreshToken = runBlocking {
+                    tokenManager.refreshToken.firstOrNull()
+                }
+
+                if (!refreshToken.isNullOrBlank()) {
+                    val newAccessToken = refreshAccessToken(originalRequest, refreshToken)
+                    if (!newAccessToken.isNullOrBlank()) {
+                        runBlocking {
+                            tokenManager.updateAccessToken(newAccessToken)
+                        }
+                        response.close()
+                        val retryRequest = originalRequest.newBuilder()
+                            .header("Authorization", "Bearer $newAccessToken")
+                            .header("Accept", "application/json")
+                            .build()
+                        return chain.proceed(retryRequest)
+                    }
+                }
+
+                // Jika refresh token juga gagal atau tidak ada, bersihkan sesi
+                runBlocking {
+                    tokenManager.clearTokens()
+                }
             }
         }
 
@@ -89,14 +108,14 @@ class AuthInterceptor(private val tokenManager: TokenManager) : Interceptor {
 
             // Gunakan OkHttpClient mandiri tanpa interceptor untuk menghindari loop rekursif
             val client = OkHttpClient.Builder().build()
-            val refreshResponse = client.newCall(refreshRequest).execute()
-
-            if (refreshResponse.isSuccessful) {
-                val bodyString = refreshResponse.body?.string()
-                if (!bodyString.isNullOrBlank()) {
-                    val json = JSONObject(bodyString)
-                    if (json.has("access_token")) {
-                        return json.getString("access_token")
+            client.newCall(refreshRequest).execute().use { refreshResponse ->
+                if (refreshResponse.isSuccessful) {
+                    val bodyString = refreshResponse.body?.string()
+                    if (!bodyString.isNullOrBlank()) {
+                        val json = JSONObject(bodyString)
+                        if (json.has("access_token")) {
+                            return json.getString("access_token")
+                        }
                     }
                 }
             }
