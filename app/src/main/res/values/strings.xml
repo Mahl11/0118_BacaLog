@@ -5,6 +5,8 @@
     <!-- Tombol & Aksi Umum -->
     <string name="btn_simpan">Simpan</string>
     <string name="btn_batal">Batal</string>
+    <string name="btn_pilih">Pilih</string>
+    <string name="desc_pilih_tanggal">Pilih tanggal dari kalender</string>
     <string name="btn_hapus">Hapus</string>
     <string name="btn_ubah">Ubah</string>
     <string name="btn_kembali">Kembali</string>

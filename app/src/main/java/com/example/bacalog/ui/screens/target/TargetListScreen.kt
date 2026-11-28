@@ -46,7 +46,6 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.material3.FilterChip
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -85,7 +84,9 @@ import com.example.bacalog.data.model.TargetDto
 import com.example.bacalog.ui.theme.SuccessGreen
 import com.example.bacalog.ui.theme.WarningAmber
 import androidx.compose.material.icons.filled.Description
+import com.example.bacalog.ui.components.BacaLogDatePickerField
 import com.example.bacalog.ui.navigation.Screen
+import com.example.bacalog.util.ValidationUtils
 import com.example.bacalog.viewmodel.TargetUiState
 import com.example.bacalog.viewmodel.TargetViewModel
 
@@ -429,9 +430,7 @@ fun TargetItemCard(
 ) {
     val isTercapai = target.statusTarget.equals("Tercapai", ignoreCase = true)
     val capaian = target.capaianTertinggi ?: 0
-    val progressRatio = if (target.targetHalaman > 0) {
-        (capaian.toFloat() / target.targetHalaman.toFloat()).coerceIn(0f, 1f)
-    } else 0f
+    val progressRatio = ValidationUtils.calculateProgressRatio(capaian, target.targetHalaman)
 
     Card(
         modifier = modifier.fillMaxWidth(),
@@ -739,17 +738,14 @@ fun TargetFormDialog(
                 )
 
                 // Input Tenggat Waktu / Deadline
-                OutlinedTextField(
+                BacaLogDatePickerField(
                     value = deadlineText,
                     onValueChange = {
                         deadlineText = it
                         localValidationError = null
                     },
-                    label = { Text(text = stringResource(R.string.target_deadline_label)) },
-                    placeholder = { Text(text = stringResource(R.string.target_deadline_placeholder)) },
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(dimensionResource(R.dimen.input_corner_radius)),
-                    singleLine = true
+                    label = stringResource(R.string.target_deadline_label),
+                    placeholder = stringResource(R.string.target_deadline_placeholder)
                 )
 
                 // Dropdown Status Target
@@ -820,7 +816,7 @@ fun TargetFormDialog(
                         localValidationError = "Tenggat waktu / deadline tidak boleh kosong"
                         return@Button
                     }
-                    if (!Regex("""^\d{4}-\d{2}-\d{2}$""").matches(deadlineText.trim())) {
+                    if (!ValidationUtils.isValidIsoDate(deadlineText)) {
                         localValidationError = "Format deadline harus YYYY-MM-DD (contoh: 2026-11-30)"
                         return@Button
                     }

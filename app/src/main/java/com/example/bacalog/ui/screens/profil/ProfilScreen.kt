@@ -83,6 +83,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.bacalog.R
 import com.example.bacalog.data.model.FokusDto
+import com.example.bacalog.ui.components.BacaLogDatePickerField
 import com.example.bacalog.data.model.UserProfilDto
 import com.example.bacalog.ui.components.BacaLogBottomBar
 import com.example.bacalog.ui.navigation.Screen
@@ -943,14 +944,11 @@ fun AddEditFokusDialog(
                     modifier = Modifier.fillMaxWidth()
                 )
 
-                OutlinedTextField(
+                BacaLogDatePickerField(
                     value = targetSelesai,
                     onValueChange = { targetSelesai = it },
-                    label = { Text(stringResource(R.string.fokus_target_label)) },
-                    placeholder = { Text(stringResource(R.string.fokus_target_placeholder)) },
-                    singleLine = true,
-                    shape = RoundedCornerShape(dimensionResource(R.dimen.input_corner_radius)),
-                    modifier = Modifier.fillMaxWidth()
+                    label = stringResource(R.string.fokus_target_label),
+                    placeholder = stringResource(R.string.fokus_target_placeholder)
                 )
 
                 Row(

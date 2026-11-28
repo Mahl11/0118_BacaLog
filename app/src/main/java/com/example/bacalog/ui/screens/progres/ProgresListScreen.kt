@@ -73,6 +73,7 @@ import com.example.bacalog.R
 import com.example.bacalog.data.model.BacaanDto
 import com.example.bacalog.data.model.ProgresDto
 import com.example.bacalog.ui.components.BacaLogBottomBar
+import com.example.bacalog.ui.components.BacaLogDatePickerField
 import com.example.bacalog.ui.navigation.Screen
 import com.example.bacalog.ui.theme.SuccessGreen
 import com.example.bacalog.ui.theme.WarningAmber
@@ -677,14 +678,11 @@ fun AddEditProgresDialog(
                 }
 
                 // Tanggal Sesi Belajar
-                OutlinedTextField(
+                BacaLogDatePickerField(
                     value = tanggalBaca,
                     onValueChange = { tanggalBaca = it },
-                    label = { Text(stringResource(R.string.progres_tanggal_label)) },
-                    placeholder = { Text(stringResource(R.string.progres_tanggal_placeholder)) },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(dimensionResource(R.dimen.input_corner_radius))
+                    label = stringResource(R.string.progres_tanggal_label),
+                    placeholder = stringResource(R.string.progres_tanggal_placeholder)
                 )
 
                 // Row: Halaman Dicapai & Target Harian
