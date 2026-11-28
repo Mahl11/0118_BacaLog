@@ -56,6 +56,7 @@ import com.example.bacalog.ui.components.BacaLogBottomBar
 import com.example.bacalog.ui.components.BacaLogTopBar
 import com.example.bacalog.ui.components.MenuCard
 import com.example.bacalog.ui.components.StatistikCard
+import com.example.bacalog.ui.components.WeeklyProgressCard
 import com.example.bacalog.ui.navigation.Screen
 import com.example.bacalog.ui.theme.IndigoPrimary
 import com.example.bacalog.ui.theme.IndigoSecondary
@@ -74,6 +75,7 @@ fun HomeScreen(
     val stat by homeViewModel.statistik.collectAsState()
     val namaPengguna by homeViewModel.namaPengguna.collectAsState()
     val activeTargetSummary by homeViewModel.activeTargetSummary.collectAsState()
+    val weeklyProgress by homeViewModel.weeklyProgress.collectAsState()
     val isLoading by homeViewModel.isLoading.collectAsState()
     val errorMessage by homeViewModel.errorMessage.collectAsState()
 
@@ -239,7 +241,10 @@ fun HomeScreen(
                 )
             }
 
-            // 3. Banner Target Belajar Aktif (Dinamis & Clickable ke TargetListScreen)
+            // 3. Grafik Mini Aktivitas Baca 7 Hari Terakhir
+            WeeklyProgressCard(points = weeklyProgress)
+
+            // 4. Banner Target Belajar Aktif (Dinamis & Clickable ke TargetListScreen)
             val cardShape = RoundedCornerShape(dimensionResource(R.dimen.card_corner_radius))
             Card(
                 modifier = Modifier

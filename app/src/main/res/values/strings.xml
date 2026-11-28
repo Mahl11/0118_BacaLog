@@ -65,6 +65,9 @@
     <string name="dashboard_target_banner_dinamis">%1$d target berjalan · %2$s (%3$d/%4$d hal)</string>
     <string name="section_statistik_belajar">Ringkasan Belajar</string>
     <string name="section_menu_utama">Modul Fitur Utama</string>
+    <string name="dashboard_grafik_judul">Aktivitas Baca 7 Hari Terakhir</string>
+    <string name="dashboard_grafik_total">%1$d halaman</string>
+    <string name="dashboard_grafik_kosong">Belum ada log bacaan dalam 7 hari terakhir</string>
 
     <!-- Statistik Card Labels -->
     <string name="stat_total_bacaan">Total Bahan</string>
