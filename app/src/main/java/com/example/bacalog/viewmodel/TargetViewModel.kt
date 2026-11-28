@@ -6,6 +6,7 @@ import com.example.bacalog.data.model.BacaanDto
 import com.example.bacalog.data.model.TargetDto
 import com.example.bacalog.data.repository.BacaanRepository
 import com.example.bacalog.data.repository.TargetRepository
+import com.example.bacalog.util.ValidationUtils
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -164,6 +165,24 @@ class TargetViewModel(
         deadline: String,
         statusTarget: String
     ) {
+        if (bacaanId <= 0) {
+            _dialogError.value = "Pilih bahan bacaan terlebih dahulu"
+            return
+        }
+        if (targetHalaman <= 0) {
+            _dialogError.value = "Target halaman harus berupa angka lebih dari 0"
+            return
+        }
+        val trimmedDeadline = deadline.trim()
+        if (trimmedDeadline.isBlank()) {
+            _dialogError.value = "Tenggat waktu / deadline tidak boleh kosong"
+            return
+        }
+        if (!ValidationUtils.isValidIsoDate(trimmedDeadline)) {
+            _dialogError.value = "Format deadline harus YYYY-MM-DD (contoh: 2026-11-30)"
+            return
+        }
+
         viewModelScope.launch {
             val currentEdited = _targetBeingEdited.value
             if (currentEdited == null) {
@@ -171,7 +190,7 @@ class TargetViewModel(
                 val result = targetRepository.createTarget(
                     bacaanId = bacaanId,
                     targetHalaman = targetHalaman,
-                    deadline = deadline,
+                    deadline = trimmedDeadline,
                     statusTarget = statusTarget
                 )
                 result.onSuccess {
@@ -187,7 +206,7 @@ class TargetViewModel(
                     id = currentEdited.id,
                     bacaanId = bacaanId,
                     targetHalaman = targetHalaman,
-                    deadline = deadline,
+                    deadline = trimmedDeadline,
                     statusTarget = statusTarget
                 )
                 result.onSuccess {

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.bacalog.data.model.FokusDto
 import com.example.bacalog.data.model.UserProfilDto
 import com.example.bacalog.data.repository.ProfilRepository
+import com.example.bacalog.util.ValidationUtils
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -208,7 +209,7 @@ class ProfilViewModel(
             return
         }
         val targetTrimmed = targetSelesai?.trim()?.ifBlank { null }
-        if (targetTrimmed != null && !Regex("""^\d{4}-\d{2}-\d{2}$""").matches(targetTrimmed)) {
+        if (targetTrimmed != null && !ValidationUtils.isValidIsoDate(targetTrimmed)) {
             _dialogError.value = "Format target selesai harus YYYY-MM-DD (contoh: 2026-11-30)"
             return
         }

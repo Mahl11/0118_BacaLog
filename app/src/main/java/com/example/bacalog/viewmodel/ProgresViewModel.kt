@@ -6,6 +6,7 @@ import com.example.bacalog.data.model.BacaanDto
 import com.example.bacalog.data.model.ProgresDto
 import com.example.bacalog.data.repository.BacaanRepository
 import com.example.bacalog.data.repository.ProgresRepository
+import com.example.bacalog.util.ValidationUtils
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -141,7 +142,7 @@ class ProgresViewModel(
             _dialogError.value = "Tanggal sesi belajar tidak boleh kosong"
             return
         }
-        if (!Regex("""^\d{4}-\d{2}-\d{2}$""").matches(tanggalBaca.trim())) {
+        if (!ValidationUtils.isValidIsoDate(tanggalBaca)) {
             _dialogError.value = "Format tanggal baca harus YYYY-MM-DD (contoh: 2026-11-23)"
             return
         }
